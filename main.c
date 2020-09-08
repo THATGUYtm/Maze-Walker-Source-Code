@@ -39,6 +39,8 @@ bool HasEnimes = false;
 bool OnTeleport = false;
 bool HasSpikes = false;
 bool StartGame = false;
+bool MusicOn = true;
+bool SoundEffectsOn = true;
 
 void ExitGame();
 static void SaveSave();
@@ -52,6 +54,7 @@ static void Update();
 static void Draw();
 static void ChangeOverLevels();
 static void SwitchLevel();
+static void BeginGame();
 
 #include "resources/Scripts/MainMenu.c"
 
@@ -135,7 +138,6 @@ void ExitGame(){
 }
 
 int main(void){
-    LoadSave();
     camera.target = (Vector2){ 0, 0 };
     camera.offset = (Vector2){ 0, 0 };
     camera.rotation = 0.0f;
@@ -143,6 +145,12 @@ int main(void){
     IntWindow();
     intTextures();
     IntMusicAndSoundEffects();
+    BeginGame();
+    return 0;
+}
+
+void BeginGame(){
+    LoadSave();
     BeginDrawing();
         ClearBackground(BLACK);
     EndDrawing();
@@ -150,7 +158,7 @@ int main(void){
     for(int i = 0; i < 20; i++){
         if(WindowShouldClose()){ExitGame();}
         UpdateCameraCenter();
-        UpdateMusicStream(MenuMusic); 
+        if(MusicOn == true){UpdateMusicStream(MenuMusic);}
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
@@ -163,7 +171,9 @@ int main(void){
             break;
         }
     }
+    StartGame = false;
     while(StartGame==false){
+        if(MusicOn == true){UpdateMusicStream(MenuMusic);}
         UpdateCameraCenter();
         if(WindowShouldClose()){ExitGame();}
         BeginDrawing();
@@ -174,8 +184,8 @@ int main(void){
     } 
     if(!WindowShouldClose()){
         if(WindowShouldClose()){ExitGame();}
-        PlaySound(LevelFinnishSoundEffect);
-        UpdateMusicStream(MenuMusic); 
+        if(SoundEffectsOn==true){PlaySound(LevelFinnishSoundEffect);}
+        if(MusicOn == true){UpdateMusicStream(MenuMusic);}
         SwitchLevel();
         PlayMusicStream(GameMusic);
     }
@@ -184,14 +194,13 @@ int main(void){
 		if(IsWindowHidden() || IsWindowMinimized()){
             PauseMenu();
         }
-        UpdateMusicStream(GameMusic); 
+        if(MusicOn == true){if(MusicOn == true){UpdateMusicStream(GameMusic);} ;} 
         Input();
         Update();
         PostionCheck();
         Draw();
     }
     ExitGame();
-    return 0;
 }
 
 static bool CanWalk(int Dir){
@@ -299,18 +308,18 @@ static void Input(){
             Rock[2] = Player[1];
             Draw();
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                PlaySound(BoxPushSoundEffect); 
+                if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
                 for(int i = 0; i < 20; i++){
-                    UpdateMusicStream(GameMusic);
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
                     Update();
                     Rock[1]-=2;
                     Player[0]-=2;
                     Draw();
                 }
             }else{
-                PlaySound(BoxPushSoundEffect);
+                if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
                 for(int i = 0; i < 8; i++){
-                    UpdateMusicStream(GameMusic);
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
                     Update();
                     Rock[1]-=5;
                     Player[0]-=5;
@@ -327,7 +336,7 @@ static void Input(){
             Player[5] = 1;
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                 for(int i = 0; i < 10; i++){
-                    UpdateMusicStream(GameMusic); 
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[0]-=4;
                     Draw();
@@ -335,7 +344,7 @@ static void Input(){
             }
             else{
                 for(int i = 0; i < 4; i++){
-                    UpdateMusicStream(GameMusic); 
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[0]-=10;
                     Draw();
@@ -355,18 +364,18 @@ static void Input(){
                 Rock[2] = Player[1]-40;
                 Draw();
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                    PlaySound(BoxPushSoundEffect);
+                    if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
                     for(int i = 0; i < 20; i++){
-                        UpdateMusicStream(GameMusic); 
+                        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                         Update();
                         Rock[2]-=2;
                         Player[1]-=2;
                         Draw();
                     }
                 }else{
-                    PlaySound(BoxPushSoundEffect);
+                    if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
                     for(int i = 0; i < 8; i++){
-                        UpdateMusicStream(GameMusic); 
+                        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                         Update();
                         Rock[2]-=5;
                         Player[1]-=5;
@@ -384,7 +393,7 @@ static void Input(){
             Player[5] = 1;
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                 for(int i = 0; i < 10; i++){
-                    UpdateMusicStream(GameMusic); 
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[1]-=4;
                     Draw();
@@ -392,7 +401,7 @@ static void Input(){
             }
             else{
                 for(int i = 0; i < 4; i++){
-                    UpdateMusicStream(GameMusic); 
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[1]-=10;
                     Draw();
@@ -411,18 +420,18 @@ static void Input(){
             Rock[2] = Player[1];
             Draw();
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                PlaySound(BoxPushSoundEffect);
+                if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
                 for(int i = 0; i < 20; i++){
-                    UpdateMusicStream(GameMusic); 
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Rock[1]+=2;
                     Player[0]+=2;
                     Draw();
                 }
             }else{
-                PlaySound(BoxPushSoundEffect);
+                if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
                 for(int i = 0; i < 8; i++){
-                    UpdateMusicStream(GameMusic); 
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Rock[1]+=5;
                     Player[0]+=5;
@@ -439,7 +448,7 @@ static void Input(){
             Player[5] = 1;
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                 for(int i = 0; i < 10; i++){
-                    UpdateMusicStream(GameMusic); 
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[0]+=4;
                     Draw();
@@ -447,7 +456,7 @@ static void Input(){
             }
             else{
                 for(int i = 0; i < 4; i++){
-                    UpdateMusicStream(GameMusic); 
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[0]+=10;
                     Draw();
@@ -467,18 +476,18 @@ static void Input(){
                 Rock[2] = Player[1]+40;
                 Draw();
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                    PlaySound(BoxPushSoundEffect);
+                    if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
                     for(int i = 0; i < 20; i++){
-                        UpdateMusicStream(GameMusic); 
+                        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                         Update();
                         Rock[2] += 2;
                         Player[1] += 2;
                         Draw();
                     }
                 }else{
-                    PlaySound(BoxPushSoundEffect);
+                    if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
                     for(int i = 0; i < 8; i++){
-                        UpdateMusicStream(GameMusic);
+                        if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
                         Update(); 
                         Rock[2] += 5;
                         Player[1] += 5;
@@ -497,7 +506,7 @@ static void Input(){
             Player[5] = 1;
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                 for(int i = 0; i < 10; i++){
-                    UpdateMusicStream(GameMusic); 
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[1] += 4;
                     Draw();
@@ -505,7 +514,7 @@ static void Input(){
             }
             else{
                 for(int i = 0; i < 4; i++){
-                    UpdateMusicStream(GameMusic); 
+                    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[1] += 10;
                     Draw();
@@ -529,7 +538,7 @@ static void Input(){
 static void PostionCheck(){
     switch(Map[((Player[1]/40)*20)+(Player[0]/40)]){
         case 0x01:
-            PlaySound(LevelFinnishSoundEffect);
+            if(SoundEffectsOn==true){PlaySound(LevelFinnishSoundEffect);}
             Draw();
             CurrentLevel++;
             SwitchLevel();
@@ -546,7 +555,7 @@ static void PostionCheck(){
             SwitchLevel();
             break;
         case 0x04:
-            PlaySound(KeySoundEffect);
+            if(SoundEffectsOn==true){PlaySound(KeySoundEffect);}
             KeysInHand++;
             Map[((Player[1]/40)*20)+(Player[0]/40)] = 0x00;
             if(KeysInHand == KeysNeeded){
@@ -559,7 +568,7 @@ static void PostionCheck(){
             }
             break;
         case 0x13:
-            PlaySound(LockSoundEffect);
+            if(SoundEffectsOn==true){PlaySound(LockSoundEffect);}
             if(Fence[0] != 0){
                 if(Fence[0] == 1){
                     Map[((Player[1]/40)*20)+(Player[0]/40)] = 0x00;
@@ -583,7 +592,7 @@ static void PostionCheck(){
         case 0x46:
             if(OnTeleport == false){
                 OnTeleport = true;
-                PlaySound(KeySoundEffect);
+                if(SoundEffectsOn==true){PlaySound(KeySoundEffect);}
                 for(int i = 0; i < 360; i++){
                     if(i != ((Player[1]/40)*20)+(Player[0]/40)){
                         if(Map[i] == 0x46){
@@ -606,7 +615,7 @@ static void Update(){
     if(HasEnimes == true){
         Enimes[0]++;
         if(Enimes[0] >= 45 && Rock[0] != 1){
-            PlaySound(EnimeSoundEffect);
+            if(SoundEffectsOn==true){PlaySound(EnimeSoundEffect);}
             Enimes[0] = 0;
             for(int i = 2; i < Enimes[1] + 2; i++){
                 switch(Map[Enimes[i]]){
@@ -656,7 +665,7 @@ static void Update(){
     }
     if(HasSpikes == true){
         if(Spikes[0] == 160){
-            PlaySound(SpikeSoundEffect);
+            if(SoundEffectsOn==true){PlaySound(SpikeSoundEffect);}
             Spikes[0] = 0;
             for(int i = 0; i < 360; i++){
                 switch(Map[i]){
@@ -792,7 +801,7 @@ static void EndTransistionScreen(){
     float fade = 1.0f;
     for(int i = 0; i < 20; i++){
         if(WindowShouldClose()){UnloadTextures();ExitGame();}
-        UpdateMusicStream(GameMusic);
+        if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
@@ -809,7 +818,7 @@ static void TransistionScreen(){
     float fade = 0.0f;
     for(int i = 0; i < 20; i++){
         if(WindowShouldClose()){ExitGame();}
-        UpdateMusicStream(GameMusic); 
+        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
         BeginDrawing();
             BeginMode2D(camera);
                 DrawRectangle(0,0,800 + GameScreenStart[0],760 + GameScreenStart[1],Fade(BLACK, fade));
@@ -819,7 +828,7 @@ static void TransistionScreen(){
     }
     for(int i = 0; i < 80; i++){
         if(WindowShouldClose()){ExitGame();}
-        UpdateMusicStream(GameMusic); 
+        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
@@ -842,7 +851,7 @@ static void PauseMenu(){
             camera.zoom = (float)GetScreenHeight()/720;
             GameScreenStart[0] = (GetScreenWidth()-800)/2;
         }
-        UpdateMusicStream(GameMusic); 
+        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
@@ -856,7 +865,7 @@ static void PauseMenu(){
             camera.zoom = (float)GetScreenHeight()/720;
             GameScreenStart[0] = (GetScreenWidth()-800)/2;
         }
-        UpdateMusicStream(GameMusic); 
+        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
@@ -870,7 +879,7 @@ static void PauseMenu(){
             camera.zoom = (float)GetScreenHeight()/720;
             GameScreenStart[0] = (GetScreenWidth()-800)/2;
         }
-        UpdateMusicStream(GameMusic); 
+        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
         BeginDrawing();
         EndDrawing();
     }
@@ -881,20 +890,19 @@ static void EndScreen(){
     GameCompleted();
     PauseMusicStream(GameMusic);
     PlayMusicStream(EndingMusic);
+    PlayerTile = LoadTexture("resources/Graphics/MainMenu/MainMenuPlayer.png");
     while(!WindowShouldClose() && !IsKeyDown(KEY_ESCAPE) && !IsKeyDown(KEY_ENTER) && !IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
         if(WindowShouldClose()){ExitGame();}
         UpdateCameraCenter();
-        UpdateMusicStream(EndingMusic);
+        if(MusicOn == true){UpdateMusicStream(EndingMusic);} ;
         BeginDrawing();
-            ClearBackground(BLACK);
-            PlayerTile = LoadTexture("resources/Graphics/MainMenu/MainMenuPlayer.png");
             ClearBackground(BLACK);
             DrawTexture(MainMenuTile, GameScreenStart[0], GameScreenStart[1], WHITE);
             DrawText("You", 50 + GameScreenStart[0], 50 + GameScreenStart[1], 180, BLACK);
             DrawText("Excaped!", 50 + GameScreenStart[0], 200 + GameScreenStart[1], 150, BLACK);
             DrawText(FormatText("Time %02ih:%02im:%02is",Timer[3], Timer[2], Timer[1]), 50 + GameScreenStart[0], 390 + GameScreenStart[1], 50, WHITE);
             DrawText(FormatText("Deaths %02i", Deaths), 50 + GameScreenStart[0], 440 + GameScreenStart[1], 50, WHITE);
-            if((BestTime[1]+(BestTime[2]*60)+(BestTime[3]*360)) > 0){DrawText(FormatText("Best Time %02ih:%02im:%02is",BestTime[3], BestTime[2], BestTime[1]), 50 + GameScreenStart[0], 480 + GameScreenStart[1], 50, WHITE);}
+            if((BestTime[1]+(BestTime[2]*60)+(BestTime[3]*360)) > 0){DrawText(FormatText("Best Time %02ih:%02im:%02is",BestTime[3], BestTime[2], BestTime[1]), 50 + GameScreenStart[0], 490 + GameScreenStart[1], 50, WHITE);}
         EndDrawing();
     }
     CurrentLevel = 0;
@@ -903,7 +911,7 @@ static void EndScreen(){
     Timer[1] = 0;
     Timer[2] = 0;
     Timer[3] = 0;
-    ExitGame();
+    BeginGame();
 }
 
 static void SwitchLevel(){
