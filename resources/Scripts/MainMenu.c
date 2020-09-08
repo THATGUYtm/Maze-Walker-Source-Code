@@ -1,5 +1,7 @@
 void OptionMenu(){
     while(1){
+        if(WindowShouldClose()){ExitGame();}
+        if(MusicOn == true){UpdateMusicStream(MenuMusic);}
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
@@ -9,6 +11,28 @@ void OptionMenu(){
                     DrawRectangle(550, 635, 200, 35, GREEN);
                     if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){break;}
                 }else{DrawRectangle(550, 635, 200, 35, WHITE);} 
+                
+                //Music Button
+                if((GetMouseX()>50)&&(GetMouseX()<300)&&(GetMouseY()>300)&&(GetMouseY()<355)){if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){MusicOn=!MusicOn;}}
+                if(MusicOn == true){
+                    DrawRectangle(50, 300, 250, 50, GREEN);
+                    DrawText("Music: On", 55, 300, 50, BLACK);
+                }else{
+                    DrawRectangle(50, 300, 250, 50, WHITE);
+                    DrawText("Music: Off", 55, 300, 50, BLACK);
+                }
+                
+                //SoundEffects Button
+                if((GetMouseX()>50)&&(GetMouseX()<850)&&(GetMouseY()>370)&&(GetMouseY()<410)){if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){SoundEffectsOn=!SoundEffectsOn;}}
+                if(SoundEffectsOn == true){
+                    DrawRectangle(50, 370, 500, 50, GREEN);
+                    DrawText("Sound Effects: On", 55, 370, 50, BLACK);
+                }else{
+                    DrawRectangle(50, 370, 500, 50, WHITE);
+                    DrawText("Sound Effects: Off", 55, 370, 50, BLACK);
+                }
+                
+                
                 DrawText("Back", 565, 635, 35, BLACK);
             EndMode2D();
         EndDrawing();
