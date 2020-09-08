@@ -9,7 +9,7 @@ void OptionMenu(){
                     DrawRectangle(550, 635, 200, 35, GREEN);
                     if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){break;}
                 }else{DrawRectangle(550, 635, 200, 35, WHITE);} 
-                DrawText("Back", 555, 635, 35, BLACK);
+                DrawText("Back", 565, 635, 35, BLACK);
             EndMode2D();
         EndDrawing();
     }
@@ -17,14 +17,14 @@ void OptionMenu(){
 
 void MainMenu(){
     ClearBackground(BLACK);
-    DrawTexture(MainMenuTile, GameScreenStart[0], GameScreenStart[1], WHITE);
-    DrawText("Maze", 160 + GameScreenStart[0], 50 + GameScreenStart[1], 180, BLACK);
-    DrawText("Walker", 90 + GameScreenStart[0], 190 + GameScreenStart[1], 180, BLACK);
-    DrawText("Walk Your Way To Freedom", 50 + GameScreenStart[0], 350 + GameScreenStart[1], 50, BLACK);
+    DrawTexture(MainMenuTile, GameScreenStart[0], 0, WHITE);
+    DrawText("Maze", 160 + GameScreenStart[0], 50, 180, BLACK);
+    DrawText("Walker", 90 + GameScreenStart[0], 190, 180, BLACK);
+    DrawText("Walk Your Way To Freedom", 50 + GameScreenStart[0], 350, 50, BLACK);
     bool ContinueExists = false;
     if(FileExists("storage.data")){ContinueExists = true;}
-    if((GetMouseX() > 300) && (GetMouseX() < 500) && (GetMouseY() > 435) && (GetMouseY() < 470)){
-        DrawRectangle(300, 435, 200, 35, GREEN);
+    if((GetMouseX() > 300 + GameScreenStart[0]) && (GetMouseX() < 500 + GameScreenStart[0]) && (GetMouseY() > 435) && (GetMouseY() < 470)){
+        DrawRectangle(300 + GameScreenStart[0], 435, 200, 35, GREEN);
         if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
             CurrentLevel = 1;
             Timer[0] = 0;
@@ -34,34 +34,34 @@ void MainMenu(){
             SaveSave();
             StartGame = true;
         }
-    }else{DrawRectangle(300, 435, 200, 35, WHITE);}
-    DrawText("New Game", 305, 435, 35, BLACK);
+    }else{DrawRectangle(300 + GameScreenStart[0], 435, 200, 35, WHITE);}
+    DrawText("New Game", 315 + GameScreenStart[0], 435, 35, BLACK);
     if(ContinueExists == true){
-        if((GetMouseX() > 300) && (GetMouseX() < 500) && (GetMouseY() > 475) && (GetMouseY() < 510)){
-            DrawRectangle(300, 475, 200, 35, GREEN);
+        if((GetMouseX() > 300 + GameScreenStart[0]) && (GetMouseX() < 500 + GameScreenStart[0]) && (GetMouseY() > 475) && (GetMouseY() < 510)){
+            DrawRectangle(300 + GameScreenStart[0], 475, 200, 35, GREEN);
             if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){StartGame = true;}
-        }else{DrawRectangle(300, 475, 200, 35, WHITE);} 
-        if((GetMouseX() > 300) && (GetMouseX() < 500) && (GetMouseY() > 515) && (GetMouseY() < 550)){
-            DrawRectangle(300, 515, 200, 35, GREEN);
+        }else{DrawRectangle(300 + GameScreenStart[0], 475, 200, 35, WHITE);} 
+        if((GetMouseX() > 300 + GameScreenStart[0]) && (GetMouseX() < 500 + GameScreenStart[0]) && (GetMouseY() > 515) && (GetMouseY() < 550)){
+            DrawRectangle(300 + GameScreenStart[0], 515, 200, 35, GREEN);
             if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){OptionMenu();}
-        }else{DrawRectangle(300, 515, 200, 35, WHITE);} 
-        if((GetMouseX() > 300) && (GetMouseX() < 500) && (GetMouseY() > 555) && (GetMouseY() < 590)){
-            DrawRectangle(300, 555, 200, 35, GREEN);
+        }else{DrawRectangle(300 + GameScreenStart[0], 515, 200, 35, WHITE);} 
+        if((GetMouseX() > 300 + GameScreenStart[0]) && (GetMouseX() < 500 + GameScreenStart[0]) && (GetMouseY() > 555) && (GetMouseY() < 590)){
+            DrawRectangle(300 + GameScreenStart[0], 555, 200, 35, GREEN);
             if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){ExitGame();}
-        }else{DrawRectangle(300, 555, 200, 35, WHITE);} 
-        DrawText("Continue", 305, 475, 35, BLACK);
-        DrawText("Options", 305, 515, 35, BLACK);
-        DrawText("Exit Game", 305, 555, 35, BLACK);
+        }else{DrawRectangle(300 + GameScreenStart[0], 555, 200, 35, WHITE);} 
+        DrawText("Continue", 315 + GameScreenStart[0], 475, 35, BLACK);
+        DrawText("Options", 315 + GameScreenStart[0], 515, 35, BLACK);
+        DrawText("Exit Game", 315 + GameScreenStart[0], 555, 35, BLACK);
     }else{
-        if((GetMouseX() > 300) && (GetMouseX() < 500) && (GetMouseY() > 475) && (GetMouseY() < 510)){
-            DrawRectangle(300, 475, 200, 35, GREEN);
+        if((GetMouseX() > 300 + GameScreenStart[0]) && (GetMouseX() < 500 + GameScreenStart[0]) && (GetMouseY() > 475) && (GetMouseY() < 510)){
+            DrawRectangle(300 + GameScreenStart[0], 475, 200, 35, GREEN);
             if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){OptionMenu();}
-        }else{DrawRectangle(300, 475, 200, 35, WHITE);} 
-        if((GetMouseX() > 300) && (GetMouseX() < 500) && (GetMouseY() > 515) && (GetMouseY() < 550)){
-            DrawRectangle(300, 515, 200, 35, GREEN);
+        }else{DrawRectangle(300 + GameScreenStart[0], 475, 200, 35, WHITE);} 
+        if((GetMouseX() > 300 + GameScreenStart[0]) && (GetMouseX() < 500 + GameScreenStart[0]) && (GetMouseY() > 515) && (GetMouseY() < 550)){
+            DrawRectangle(300 + GameScreenStart[0], 515, 200, 35, GREEN);
             if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){ExitGame();}
-        }else{DrawRectangle(300, 515, 200, 35, WHITE);} 
-        DrawText("Options", 305, 475, 35, BLACK);
-        DrawText("ExitGame", 305, 515, 35, BLACK);
+        }else{DrawRectangle(300 + GameScreenStart[0], 515, 200, 35, WHITE);} 
+        DrawText("Options", 315 + GameScreenStart[0], 475, 35, BLACK);
+        DrawText("ExitGame", 315 + GameScreenStart[0], 515, 35, BLACK);
     }
 }
