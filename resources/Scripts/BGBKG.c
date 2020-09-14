@@ -76,6 +76,7 @@ Texture2D tile67;
 Texture2D tile68;
 Texture2D tile69;
 Texture2D tile70;
+Texture2D TileSet;
 
 static void intTextures(){
     MainMenuTile = LoadTexture("resources/Graphics/MainMenu/MainMenu.png"); 
@@ -153,6 +154,7 @@ static void intTextures(){
     tile68 = LoadTexture("resources/Graphics/Wall/Tile068.png");
     tile69 = LoadTexture("resources/Graphics/Wall/Tile069.png");
     tile70 = LoadTexture("resources/Graphics/Wall/Tile70.png");
+	TileSet = LoadTexture("resources/Tileset.png");
 }
 
 static void DrawBKG(){

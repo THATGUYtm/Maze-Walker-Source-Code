@@ -41,6 +41,7 @@ bool HasSpikes = false;
 bool StartGame = false;
 bool MusicOn = true;
 bool SoundEffectsOn = true;
+bool Resume = false;
 
 void ExitGame();
 static void SaveSave();
@@ -55,6 +56,16 @@ static void Draw();
 static void ChangeOverLevels();
 static void SwitchLevel();
 static void BeginGame();
+
+static void ResumeFunct(){Resume = true;}
+
+void DrawButton(char* Text, int X, int Y, int Width, int Height, void Function(), Color color, Color TextColor, Color SelectionColor){
+    if((GetMouseX() > X + GameScreenStart[0]) && (GetMouseX() < X+Width + GameScreenStart[0]) && (GetMouseY() > Y) && (GetMouseY() < Y+Height)){
+        DrawRectangle(X + GameScreenStart[0], Y, Width, Height, SelectionColor);
+        if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){Function();}
+    }else{DrawRectangle(X + GameScreenStart[0], Y, Width, Height, color);} 
+    DrawText(FormatText(Text), X+10 + GameScreenStart[0], Y+5, Height-5, TextColor);
+}
 
 #include "resources/Scripts/MainMenu.c"
 
@@ -84,7 +95,7 @@ static void IntWindow(){
 }
 
 void UpdateCameraCenter(){
-    GameScreenStart[0] = (GetScreenWidth()-800)/2;
+    GameScreenStart[0] = (((GetScreenWidth())/2)-400);
     camera.zoom = ((float)GetScreenHeight()/720);
 }
 
@@ -526,11 +537,11 @@ static void Input(){
     if(ButtonsPressed == 0){
         Player[5] = 0;
     }
-    if(IsKeyDown(KEY_ENTER) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_LEFT)){
+    if(IsKeyPressed(KEY_ENTER) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_LEFT)){
         Deaths++;
         SwitchLevel();
     }
-    if(IsKeyDown(KEY_ESCAPE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
+    if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
         PauseMenu();
     }
 }
@@ -773,6 +784,7 @@ static void Draw(){
                 DrawTexture(tile5, Rock[1] + GameScreenStart[0], Rock[2] + GameScreenStart[1], WHITE);
             }
         EndMode2D();
+        DrawFPS(10,10);
     EndDrawing();
 }
 
@@ -808,6 +820,9 @@ static void EndTransistionScreen(){
                 DrawBKG();
                 DrawTexture(PlayerTile, Player[0] + GameScreenStart[0], Player[1] + GameScreenStart[1], WHITE);
                 DrawRectangle(0,0,800 + GameScreenStart[0],760 + GameScreenStart[1],Fade(BLACK, fade));
+                PlayerTile = PlayerTile1;
+                DrawTexture(PlayerTile, 320 + GameScreenStart[0], 340 + GameScreenStart[1], Fade(WHITE, fade));
+                DrawText(FormatText("%02i", CurrentLevel), 400 + GameScreenStart[0], 340 + GameScreenStart[1], 50, Fade(WHITE, fade));
             EndMode2D();
         EndDrawing();
         fade -= 0.05f;
@@ -822,6 +837,9 @@ static void TransistionScreen(){
         BeginDrawing();
             BeginMode2D(camera);
                 DrawRectangle(0,0,800 + GameScreenStart[0],760 + GameScreenStart[1],Fade(BLACK, fade));
+                PlayerTile = PlayerTile1;
+                DrawTexture(PlayerTile, 320 + GameScreenStart[0], 340 + GameScreenStart[1], Fade(WHITE, fade));
+                DrawText(FormatText("%02i", CurrentLevel), 400 + GameScreenStart[0], 340 + GameScreenStart[1], 50, Fade(WHITE, fade));
             EndMode2D();
         EndDrawing();
         fade += 0.05f;
@@ -838,29 +856,53 @@ static void TransistionScreen(){
             EndMode2D();
         EndDrawing();
     }
+}
+
+void PauseMenuContent(){
+    if(WindowShouldClose()){ExitGame();}
+    if(IsWindowResized()){
+        camera.zoom = (float)GetScreenHeight()/720;
+        GameScreenStart[0] = (GetScreenWidth()-800)/2;
+    }
+    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
     BeginDrawing();
-        ClearBackground(BLACK);
+        BeginMode2D(camera);
+            ClearBackground(BLACK);
+            DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, WHITE);
+            DrawButton("Resume", 230, 380, 300, 50, ResumeFunct, WHITE, BLACK, GREEN);
+            DrawButton("MainMenu", 230, 440, 300, 50, BeginGame, WHITE, BLACK, GREEN);
+            DrawButton("Exit", 230, 500, 300, 50, ExitGame, WHITE, BLACK, GREEN);
+        EndMode2D();
     EndDrawing();
 }
 
 static void PauseMenu(){
-    PauseMusicStream(GameMusic);
-    for(int i = 0; i < 10; i++){
-        if(WindowShouldClose()){ExitGame();}
-		if(IsWindowResized()){
-            camera.zoom = (float)GetScreenHeight()/720;
-            GameScreenStart[0] = (GetScreenWidth()-800)/2;
-        }
-        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
+    float fade = 0.0f;
+    for(int i = 0; i < 20; i++){
+        if(WindowShouldClose()){UnloadTextures();ExitGame();}
+        if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
-                DrawText("PAUSE", 10 + GameScreenStart[0], 10 + GameScreenStart[1], 50, WHITE);
+                DrawBKG();
+                DrawTexture(PlayerTile, Player[0] + GameScreenStart[0], Player[1] + GameScreenStart[1], WHITE);
+            EndMode2D();
+            DrawRectangle(0,0,800 + GameScreenStart[0],760 + GameScreenStart[1],Fade(BLACK, fade));
+            BeginMode2D(camera);
+                DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, Fade(WHITE, fade));
+                DrawButton("Resume", 230, 380, 300, 50, ResumeFunct, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
+                DrawButton("MainMenu", 230, 440, 300, 50, BeginGame, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
+                DrawButton("Exit", 230, 500, 300, 50, ExitGame, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
             EndMode2D();
         EndDrawing();
+        fade += 0.05f;
     }
-    while(!WindowShouldClose() && !IsKeyDown(KEY_ESCAPE) && !IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
-		if(WindowShouldClose()){ExitGame();}
+    Resume = false;
+    PauseMusicStream(GameMusic);
+    while(IsKeyDown(KEY_ESCAPE)){PauseMenuContent();}
+    while(Resume == false){
+        if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){break;}
+        if(WindowShouldClose()){ExitGame();}
         if(IsWindowResized()){
             camera.zoom = (float)GetScreenHeight()/720;
             GameScreenStart[0] = (GetScreenWidth()-800)/2;
@@ -869,21 +911,34 @@ static void PauseMenu(){
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
-                DrawText("PAUSE", 10 + GameScreenStart[0], 10 + GameScreenStart[1], 50, WHITE);
+                DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, WHITE);
+                DrawButton("Resume", 230, 380, 300, 50, ResumeFunct, WHITE, BLACK, GREEN);
+                DrawButton("MainMenu", 230, 440, 300, 50, BeginGame, WHITE, BLACK, GREEN);
+                DrawButton("Exit", 230, 500, 300, 50, ExitGame, WHITE, BLACK, GREEN);
             EndMode2D();
         EndDrawing();
-    }
-    for(int i = 0; i < 10; i++){
-        if(WindowShouldClose()){ExitGame();}
-		if(IsWindowResized()){
-            camera.zoom = (float)GetScreenHeight()/720;
-            GameScreenStart[0] = (GetScreenWidth()-800)/2;
         }
+    ResumeMusicStream(GameMusic);
+    fade = 1.0f;
+    for(int i = 0; i < 20; i++){
+        if(WindowShouldClose()){ExitGame();}
         if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
         BeginDrawing();
+            BeginMode2D(camera);
+                ClearBackground(BLACK);
+                DrawBKG();
+                DrawTexture(PlayerTile, Player[0] + GameScreenStart[0], Player[1] + GameScreenStart[1], WHITE);
+            EndMode2D();
+            DrawRectangle(0,0,800 + GameScreenStart[0],760 + GameScreenStart[1],Fade(BLACK, fade));
+            BeginMode2D(camera);
+                DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, Fade(WHITE, fade));
+                DrawButton("Resume", 230, 380, 300, 50, ResumeFunct, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
+                DrawButton("MainMenu", 230, 440, 300, 50, BeginGame, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
+                DrawButton("Exit", 230, 500, 300, 50, ExitGame, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
+            EndMode2D();
         EndDrawing();
+        fade -= 0.05f;
     }
-    ResumeMusicStream(GameMusic);
 }
 
 static void EndScreen(){

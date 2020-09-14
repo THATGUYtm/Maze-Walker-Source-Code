@@ -5,34 +5,28 @@ void OptionMenu(){
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
-                DrawTexture(MainMenuTile, GameScreenStart[0], GameScreenStart[1], WHITE);
+                DrawTextureRec(TileSet,(Rectangle){0.0f,0.0f,800.0f,720.0f}, (Vector2){GameScreenStart[0], 0}, WHITE);
                 DrawText("Options", 50 + GameScreenStart[0], 50 + GameScreenStart[1], 180, BLACK);
                 if((GetMouseX() > 550) && (GetMouseX() < 750) && (GetMouseY() > 635) && (GetMouseY() < 670)){
                     DrawRectangle(550, 635, 200, 35, GREEN);
                     if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){break;}
                 }else{DrawRectangle(550, 635, 200, 35, WHITE);} 
-                
-                //Music Button
                 if((GetMouseX()>50)&&(GetMouseX()<300)&&(GetMouseY()>300)&&(GetMouseY()<355)){if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){MusicOn=!MusicOn;}}
                 if(MusicOn == true){
-                    DrawRectangle(50, 300, 250, 50, GREEN);
-                    DrawText("Music: On", 55, 300, 50, BLACK);
+                    DrawRectangle(50 + GameScreenStart[0], 300, 250, 50, GREEN);
+                    DrawText("Music: On", 55 + GameScreenStart[0], 300, 50, BLACK);
                 }else{
-                    DrawRectangle(50, 300, 250, 50, WHITE);
-                    DrawText("Music: Off", 55, 300, 50, BLACK);
+                    DrawRectangle(50 + GameScreenStart[0], 300, 250, 50, WHITE);
+                    DrawText("Music: Off", 55 + GameScreenStart[0], 300, 50, BLACK);
                 }
-                
-                //SoundEffects Button
                 if((GetMouseX()>50)&&(GetMouseX()<850)&&(GetMouseY()>370)&&(GetMouseY()<410)){if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){SoundEffectsOn=!SoundEffectsOn;}}
                 if(SoundEffectsOn == true){
-                    DrawRectangle(50, 370, 500, 50, GREEN);
-                    DrawText("Sound Effects: On", 55, 370, 50, BLACK);
+                    DrawRectangle(50 + GameScreenStart[0], 370, 500, 50, GREEN);
+                    DrawText("Sound Effects: On", 55 + GameScreenStart[0], 370, 50, BLACK);
                 }else{
-                    DrawRectangle(50, 370, 500, 50, WHITE);
-                    DrawText("Sound Effects: Off", 55, 370, 50, BLACK);
+                    DrawRectangle(50 + GameScreenStart[0], 370, 500, 50, WHITE);
+                    DrawText("Sound Effects: Off", 55 + GameScreenStart[0], 370, 50, BLACK);
                 }
-                
-                
                 DrawText("Back", 565, 635, 35, BLACK);
             EndMode2D();
         EndDrawing();
@@ -41,7 +35,7 @@ void OptionMenu(){
 
 void MainMenu(){
     ClearBackground(BLACK);
-    DrawTexture(MainMenuTile, GameScreenStart[0], 0, WHITE);
+    DrawTextureRec(TileSet,(Rectangle){0.0f,0.0f,800.0f,720.0f}, (Vector2){GameScreenStart[0], 0}, WHITE);
     DrawText("Maze", 160 + GameScreenStart[0], 50, 180, BLACK);
     DrawText("Walker", 90 + GameScreenStart[0], 190, 180, BLACK);
     DrawText("Walk Your Way To Freedom", 50 + GameScreenStart[0], 350, 50, BLACK);
