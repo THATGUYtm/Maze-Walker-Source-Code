@@ -13,6 +13,8 @@ Sound BoxPushSoundEffect;
 Sound SpikeSoundEffect;
 Sound EnimeSoundEffect;
 Sound LevelFinnishSoundEffect;
+Sound MenuChange;
+Sound MenuSelect;
 
 Camera2D camera = { 0 };
 
@@ -42,6 +44,7 @@ bool StartGame = false;
 bool MusicOn = true;
 bool SoundEffectsOn = true;
 bool Resume = false;
+bool MenuControllerMode = false;
 
 void ExitGame();
 static void SaveSave();
@@ -82,6 +85,8 @@ static void IntMusicAndSoundEffects(){
     SpikeSoundEffect = LoadSound("resources/SoundEffects/SpikeSoundEffect.wav");
     EnimeSoundEffect = LoadSound("resources/SoundEffects/EnimeMovingSoundEffect.wav"); 
     LevelFinnishSoundEffect = LoadSound("resources/SoundEffects/LevelFinnishSoundEffect.wav"); 
+    MenuSelect = LoadSound("resources/SoundEffects/MenuSelectSoundEffect.wav"); 
+    MenuChange = LoadSound("resources/SoundEffects/MenuChangeSoundEffect.wav"); 
 }
 
 static void IntWindow(){
@@ -819,7 +824,9 @@ static void EndTransistionScreen(){
                 ClearBackground(BLACK);
                 DrawBKG();
                 DrawTexture(PlayerTile, Player[0] + GameScreenStart[0], Player[1] + GameScreenStart[1], WHITE);
-                DrawRectangle(0,0,800 + GameScreenStart[0],760 + GameScreenStart[1],Fade(BLACK, fade));
+			EndMode2D();
+                DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
+			BeginMode2D(camera);
                 PlayerTile = PlayerTile1;
                 DrawTexture(PlayerTile, 320 + GameScreenStart[0], 340 + GameScreenStart[1], Fade(WHITE, fade));
                 DrawText(FormatText("%02i", CurrentLevel), 400 + GameScreenStart[0], 340 + GameScreenStart[1], 50, Fade(WHITE, fade));
@@ -835,8 +842,8 @@ static void TransistionScreen(){
         if(WindowShouldClose()){ExitGame();}
         if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
         BeginDrawing();
-            BeginMode2D(camera);
-                DrawRectangle(0,0,800 + GameScreenStart[0],760 + GameScreenStart[1],Fade(BLACK, fade));
+			DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
+            BeginMode2D(camera);  
                 PlayerTile = PlayerTile1;
                 DrawTexture(PlayerTile, 320 + GameScreenStart[0], 340 + GameScreenStart[1], Fade(WHITE, fade));
                 DrawText(FormatText("%02i", CurrentLevel), 400 + GameScreenStart[0], 340 + GameScreenStart[1], 50, Fade(WHITE, fade));
@@ -887,7 +894,7 @@ static void PauseMenu(){
                 DrawBKG();
                 DrawTexture(PlayerTile, Player[0] + GameScreenStart[0], Player[1] + GameScreenStart[1], WHITE);
             EndMode2D();
-            DrawRectangle(0,0,800 + GameScreenStart[0],760 + GameScreenStart[1],Fade(BLACK, fade));
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
             BeginMode2D(camera);
                 DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, Fade(WHITE, fade));
                 DrawButton("Resume", 230, 380, 300, 50, ResumeFunct, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
@@ -929,7 +936,7 @@ static void PauseMenu(){
                 DrawBKG();
                 DrawTexture(PlayerTile, Player[0] + GameScreenStart[0], Player[1] + GameScreenStart[1], WHITE);
             EndMode2D();
-            DrawRectangle(0,0,800 + GameScreenStart[0],760 + GameScreenStart[1],Fade(BLACK, fade));
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
             BeginMode2D(camera);
                 DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, Fade(WHITE, fade));
                 DrawButton("Resume", 230, 380, 300, 50, ResumeFunct, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
