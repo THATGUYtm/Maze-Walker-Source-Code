@@ -45,6 +45,7 @@ bool MusicOn = true;
 bool SoundEffectsOn = true;
 bool Resume = false;
 bool MenuControllerMode = false;
+bool HardMode = false;
 
 void ExitGame();
 static void SaveSave();
@@ -59,6 +60,7 @@ static void Draw();
 static void ChangeOverLevels();
 static void SwitchLevel();
 static void BeginGame();
+static void Game();
 
 static void ResumeFunct(){Resume = true;}
 
@@ -165,6 +167,25 @@ int main(void){
     return 0;
 }
 
+void MainMenuSection(){
+    CurserPos = 0;
+    StartGame = false;
+    while(StartGame==false){
+        if(MusicOn == true){
+            UpdateMusicStream(MenuMusic);
+        }
+        UpdateCameraCenter();
+        if(WindowShouldClose()){
+            ExitGame();
+        }
+        BeginDrawing();
+            BeginMode2D(camera);
+                MainMenu();
+            EndMode2D();
+        EndDrawing();
+    } 
+}
+
 void BeginGame(){
     LoadSave();
     BeginDrawing();
@@ -187,17 +208,11 @@ void BeginGame(){
             break;
         }
     }
-    StartGame = false;
-    while(StartGame==false){
-        if(MusicOn == true){UpdateMusicStream(MenuMusic);}
-        UpdateCameraCenter();
-        if(WindowShouldClose()){ExitGame();}
-        BeginDrawing();
-            BeginMode2D(camera);
-                MainMenu();
-            EndMode2D();
-        EndDrawing();
-    } 
+    MainMenuSection();
+    Game();
+}
+
+void Game(){
     if(!WindowShouldClose()){
         if(WindowShouldClose()){ExitGame();}
         if(SoundEffectsOn==true){PlaySound(LevelFinnishSoundEffect);}
@@ -210,7 +225,9 @@ void BeginGame(){
 		if(IsWindowHidden() || IsWindowMinimized()){
             PauseMenu();
         }
-        if(MusicOn == true){if(MusicOn == true){UpdateMusicStream(GameMusic);} ;} 
+        if(MusicOn == true){
+            UpdateMusicStream(GameMusic);
+        } 
         Input();
         Update();
         PostionCheck();
@@ -543,8 +560,18 @@ static void Input(){
         Player[5] = 0;
     }
     if(IsKeyPressed(KEY_ENTER) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_LEFT)){
-        Deaths++;
-        SwitchLevel();
+        if(HardMode == true){
+            CurrentLevel = 0;
+            Deaths = 0;
+            Timer[0] = 0;
+            Timer[1] = 0;
+            Timer[2] = 0;
+            Timer[3] = 0;
+            BeginGame();
+        }else{
+            Deaths++;
+            SwitchLevel(); 
+        }        
     }
     if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
         PauseMenu();
@@ -564,11 +591,24 @@ static void PostionCheck(){
         case 0x18:
         case 0x19:
         case 0x1A:
-            Deaths++;
-            for(int i = 0; i < 5; i++){
-                Draw();
+            if(HardMode == true){
+                Deaths++;
+                for(int i = 0; i < 5; i++){
+                    Draw();
+                }
+                SwitchLevel();
+            }else{
+                 for(int i = 0; i < 5; i++){
+                     Draw();
+                 }
+                CurrentLevel = 0;
+                Deaths = 0;
+                Timer[0] = 0;
+                Timer[1] = 0;
+                Timer[2] = 0;
+                Timer[3] = 0;
+                BeginGame();
             }
-            SwitchLevel();
             break;
         case 0x04:
             if(SoundEffectsOn==true){PlaySound(KeySoundEffect);}
