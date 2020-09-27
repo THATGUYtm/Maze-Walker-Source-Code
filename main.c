@@ -18,6 +18,12 @@ Sound MenuSelect;
 Camera2D camera = { 0 };
 Rectangle PlayerTilePos = (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f};
 
+
+unsigned int TotalDeaths;
+unsigned int TotalPlays;
+unsigned int TotalFinnished;
+unsigned int LeastDeathsInPlayThough; 
+unsigned int MostDeathsInPlayThough;
 unsigned int CurrentLevel = 1;
 unsigned int NumberOFLevels = 32;
 unsigned int Deaths = 0;
@@ -30,6 +36,8 @@ int i;
 unsigned int Fence[10];
 unsigned int Lock[10];
 unsigned int Enimes[120];
+unsigned int WorstTime[4];
+unsigned int TotalPlayTime[4];
 
 unsigned int Spikes[] = {0};
 unsigned int Timer[] = {0, 0, 0, 0};
@@ -47,11 +55,13 @@ bool SoundEffectsOn = true;
 bool Resume = false;
 bool MenuControllerMode = false;
 bool HardMode = false;
+bool HardModeBeaten;
 
 #include "resources/Scripts/BGBKG.c"
 
 static void ExitGame();
-static void SaveSave();
+void SaveSave();
+void LoadSave();
 static void PostionCheck();
 static void OptionMenu();
 static void MainMenu();
@@ -126,6 +136,19 @@ void LoadSave(){
     BestTime[2] = LoadStorageValue(8);
     BestTime[3] = LoadStorageValue(9);
     if(CurrentLevel == 0){CurrentLevel = 1;}
+    TotalPlayTime[0] = LoadStorageValue(10);
+    TotalPlayTime[1] = LoadStorageValue(11);
+    TotalPlayTime[2] = LoadStorageValue(12);
+    TotalPlayTime[3] = LoadStorageValue(13);
+    TotalDeaths = LoadStorageValue(14);
+    TotalPlays = LoadStorageValue(15);
+    WorstTime[0] = LoadStorageValue(16);
+    WorstTime[1] = LoadStorageValue(17);
+    WorstTime[2] = LoadStorageValue(18);
+    WorstTime[3] = LoadStorageValue(19);
+    LeastDeathsInPlayThough = LoadStorageValue(20);
+    MostDeathsInPlayThough = LoadStorageValue(21);
+    HardModeBeaten = LoadStorageValue(22);
 }
 
 void SaveSave(){
@@ -139,10 +162,23 @@ void SaveSave(){
     SaveStorageValue(7, BestTime[1]);
     SaveStorageValue(8, BestTime[2]);
     SaveStorageValue(9, BestTime[3]);
+    SaveStorageValue(10, TotalPlayTime[0]);
+    SaveStorageValue(11, TotalPlayTime[1]);
+    SaveStorageValue(12, TotalPlayTime[2]);
+    SaveStorageValue(13, TotalPlayTime[3]);
+    SaveStorageValue(14, TotalDeaths);
+    SaveStorageValue(15, TotalPlays);
+    SaveStorageValue(16, WorstTime[0]);
+    SaveStorageValue(17, WorstTime[1]);
+    SaveStorageValue(18, WorstTime[2]);
+    SaveStorageValue(19, WorstTime[3]);
+    SaveStorageValue(20, LeastDeathsInPlayThough);
+    SaveStorageValue(21, MostDeathsInPlayThough);
+    SaveStorageValue(22, HardModeBeaten);
 }
 
 void GameCompleted(){
-    int CalcTime[]={(Timer[1]+(Timer[2]*60)+(Timer[3]*360)),(BestTime[1]+(BestTime[2]*60)+(BestTime[3]*360))};
+    int CalcTime[]={(Timer[1]+(Timer[2]*60)+(Timer[3]*360)),(BestTime[1]+(BestTime[2]*60)+(BestTime[3]*360)), (WorstTime[1]+(WorstTime[2]*60)+(WorstTime[3]*360))};
     if(CalcTime[1] != 0){
         if(CalcTime[0]<CalcTime[1]){
             BestTime[0] = Timer[0];
@@ -150,12 +186,24 @@ void GameCompleted(){
             BestTime[2] = Timer[2];
             BestTime[3] = Timer[3];
         }
+        if(CalcTime[0] > CalcTime[2]){
+            WorstTime[0] = Timer[0];
+            WorstTime[1] = Timer[1];
+            WorstTime[2] = Timer[2];
+            WorstTime[3] = Timer[3];
+        }
     }else{
         BestTime[0] = Timer[0];
         BestTime[1] = Timer[1];
         BestTime[2] = Timer[2];
         BestTime[3] = Timer[3];
+        WorstTime[0] = Timer[0];
+        WorstTime[1] = Timer[1];
+        WorstTime[2] = Timer[2];
+        WorstTime[3] = Timer[3];
     }
+    if(Deaths < LeastDeathsInPlayThough && LeastDeathsInPlayThough != 0){LeastDeathsInPlayThough = Deaths;}else{LeastDeathsInPlayThough = Deaths;}
+    if(Deaths > MostDeathsInPlayThough && MostDeathsInPlayThough != 0){MostDeathsInPlayThough = Deaths;}else{MostDeathsInPlayThough = Deaths;}
 }
 
 void ExitGame(){
@@ -171,6 +219,7 @@ int main(void){
     IntWindow();
     intTextures();
     IntMusicAndSoundEffects();
+    LoadSave();
     BeginGame();
     return 0;
 }
@@ -193,7 +242,7 @@ void MainMenuSection(){
 }
 
 void BeginGame(){
-    LoadSave();
+    SaveSave();
     BeginDrawing();
         ClearBackground(BLACK);
     EndDrawing();
@@ -216,6 +265,7 @@ void BeginGame(){
 }
 
 void Game(){
+    TotalPlays++;
     if(!WindowShouldClose()){
         if(WindowShouldClose()){ExitGame();}
         if(SoundEffectsOn==true){PlaySound(LevelFinnishSoundEffect);}
@@ -530,9 +580,11 @@ static void Input(){
             Timer[1] = 0;
             Timer[2] = 0;
             Timer[3] = 0;
+            TotalDeaths++;
             BeginGame();
         }else{
             Deaths++;
+            TotalDeaths++;
             SwitchLevel(); 
         }        
     }
@@ -560,6 +612,7 @@ static void PostionCheck(){
                 }
                 CurrentLevel = 0;
                 Deaths = 0;
+                TotalDeaths++;
                 Timer[0] = 0;
                 Timer[1] = 0;
                 Timer[2] = 0;
@@ -567,6 +620,7 @@ static void PostionCheck(){
                 BeginGame();
             }else{
                 Deaths++;
+                TotalDeaths++;
                 for(i = 0; i < 5; i++){
                     Draw();
                 }
@@ -774,18 +828,13 @@ static void Draw(){
     BeginDrawing();
         BeginMode2D(camera);
             Timer[0] += 1;
-            if(Timer[0] > 59){
-                Timer[1]++;
-                Timer[0] = 0;
-            }
-            if(Timer[1] > 59){
-                Timer[2]++;
-                Timer[1] = 0;
-            }
-            if(Timer[2] > 59){
-                Timer[3]++;
-                Timer[2] = 0;
-            }
+            if(Timer[0] > 59){Timer[1]++;Timer[0] = 0;}
+            if(Timer[1] > 59){Timer[2]++;Timer[1] = 0;}
+            if(Timer[2] > 59){Timer[3]++;Timer[2] = 0;}
+            TotalPlayTime[0]++;
+            if(TotalPlayTime[0] > 59){TotalPlayTime[1]++;TotalPlayTime[0] = 0;}
+            if(TotalPlayTime[1] > 59){TotalPlayTime[2]++;TotalPlayTime[1] = 0;}
+            if(TotalPlayTime[2] > 59){TotalPlayTime[3]++;TotalPlayTime[2] = 0;}
             DrawBKG();
             DrawTextureRec(TileSet, PlayerTilePos, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
             if(Rock[0] == 1){
@@ -955,6 +1004,14 @@ static void EndScreen(){
     GameCompleted();
     PauseMusicStream(GameMusic);
     PlayMusicStream(EndingMusic);
+    if(HardMode == true){HardModeBeaten = true;}
+    CurrentLevel = 0;
+    Deaths = 0;
+    Timer[0] = 0;
+    Timer[1] = 0;
+    Timer[2] = 0;
+    Timer[3] = 0;
+    TotalFinnished++;
     while(!WindowShouldClose() && !IsKeyDown(KEY_ESCAPE) && !IsKeyDown(KEY_ENTER) && !IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
         if(WindowShouldClose()){ExitGame();}
         UpdateCameraCenter();
@@ -969,12 +1026,6 @@ static void EndScreen(){
             if((BestTime[1]+(BestTime[2]*60)+(BestTime[3]*360)) > 0){DrawText(FormatText("Best Time %02ih:%02im:%02is",BestTime[3], BestTime[2], BestTime[1]), 50 + GameScreenStart[0], 490 + GameScreenStart[1], 50, WHITE);}
         EndDrawing();
     }
-    CurrentLevel = 0;
-    Deaths = 0;
-    Timer[0] = 0;
-    Timer[1] = 0;
-    Timer[2] = 0;
-    Timer[3] = 0;
     BeginGame();
 }
 
