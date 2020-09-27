@@ -1,8 +1,7 @@
 #include "raylib.h"
 #include "resources/Scripts/Levels.c"
-#include "resources/Scripts/BGBKG.c"
-
 #define DeadZone 0.3f
+#define FrameRate 60
 
 Music GameMusic;
 Music MenuMusic;
@@ -17,6 +16,7 @@ Sound MenuChange;
 Sound MenuSelect;
 
 Camera2D camera = { 0 };
+Rectangle PlayerTilePos = (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f};
 
 unsigned int CurrentLevel = 1;
 unsigned int NumberOFLevels = 32;
@@ -25,6 +25,7 @@ unsigned int ButtonsPressed = 0;
 unsigned int KeysNeeded = 1;
 unsigned int KeysInHand = 0;
 unsigned int DoorLocation = 0;
+int i;
 
 unsigned int Fence[10];
 unsigned int Lock[10];
@@ -47,7 +48,9 @@ bool Resume = false;
 bool MenuControllerMode = false;
 bool HardMode = false;
 
-void ExitGame();
+#include "resources/Scripts/BGBKG.c"
+
+static void ExitGame();
 static void SaveSave();
 static void PostionCheck();
 static void OptionMenu();
@@ -61,14 +64,19 @@ static void ChangeOverLevels();
 static void SwitchLevel();
 static void BeginGame();
 static void Game();
+static void UpdateCameraCenter();
 
 static void ResumeFunct(){Resume = true;}
 
 void DrawButton(char* Text, int X, int Y, int Width, int Height, void Function(), Color color, Color TextColor, Color SelectionColor){
     if((GetMouseX() > X + GameScreenStart[0]) && (GetMouseX() < X+Width + GameScreenStart[0]) && (GetMouseY() > Y) && (GetMouseY() < Y+Height)){
         DrawRectangle(X + GameScreenStart[0], Y, Width, Height, SelectionColor);
-        if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){Function();}
-    }else{DrawRectangle(X + GameScreenStart[0], Y, Width, Height, color);} 
+        if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
+            Function();
+        }
+    }else{
+        DrawRectangle(X + GameScreenStart[0], Y, Width, Height, color);
+    } 
     DrawText(FormatText(Text), X+10 + GameScreenStart[0], Y+5, Height-5, TextColor);
 }
 
@@ -97,7 +105,7 @@ static void IntWindow(){
     SetWindowMinSize(800, 720);
     Image Icon = LoadImage("resources/Graphics/Player/Tile06.png");
     SetWindowIcon(Icon);
-    SetTargetFPS(60);
+    SetTargetFPS(FrameRate);
     SetExitKey(KEY_DELETE);
 }
 
@@ -170,7 +178,7 @@ int main(void){
 void MainMenuSection(){
     CurserPos = 0;
     StartGame = false;
-    while(StartGame==false){
+    while(StartGame == false){
         if(MusicOn == true){
             UpdateMusicStream(MenuMusic);
         }
@@ -179,9 +187,7 @@ void MainMenuSection(){
             ExitGame();
         }
         BeginDrawing();
-            BeginMode2D(camera);
-                MainMenu();
-            EndMode2D();
+            MainMenu();
         EndDrawing();
     } 
 }
@@ -192,7 +198,7 @@ void BeginGame(){
         ClearBackground(BLACK);
     EndDrawing();
     float fade = 1.0f;
-    for(int i = 0; i < 20; i++){
+    for(i = 0; i < 20; i++){
         if(WindowShouldClose()){ExitGame();}
         UpdateCameraCenter();
         if(MusicOn == true){UpdateMusicStream(MenuMusic);}
@@ -204,9 +210,6 @@ void BeginGame(){
             EndMode2D();
         EndDrawing();
         fade -= 0.05f;
-        if(WindowShouldClose()){
-            break;
-        }
     }
     MainMenuSection();
     Game();
@@ -232,6 +235,10 @@ void Game(){
         Update();
         PostionCheck();
         Draw();
+        Player[0] /= 40;
+        Player[0] *= 40;
+        Player[1] /= 40;
+        Player[1] *= 40;
     }
     ExitGame();
 }
@@ -240,18 +247,7 @@ static bool CanWalk(int Dir){
     switch(Dir){
         case 0:
             switch(Map[(((Player[1]/40)-1)*20)+(Player[0]/40)]){
-                case 0x00:
-                case 0x01:
-                case 0x03:
-                case 0x04:
-                case 0x13:
-                case 0x15:
-                case 0x16:
-                case 0x17:
-                case 0x18:
-                case 0x19:
-                case 0x1A:
-                case 0x46:
+                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:
                     return true;
                     break;
                 default:
@@ -261,18 +257,7 @@ static bool CanWalk(int Dir){
             break;
         case 1:
             switch(Map[(((Player[1]/40)+1)*20)+(Player[0]/40)]){
-                case 0x00:
-                case 0x01:
-                case 0x03:
-                case 0x04:
-                case 0x13:
-                case 0x15:
-                case 0x16:
-                case 0x17:
-                case 0x18:
-                case 0x19:
-                case 0x1A:
-                case 0x46:
+                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:
                     return true;
                     break;
                 default:
@@ -282,18 +267,7 @@ static bool CanWalk(int Dir){
             break;
         case 2:
             switch(Map[(((Player[1]/40))*20)+((Player[0]/40)-1)]){
-                case 0x00:
-                case 0x01:
-                case 0x03:
-                case 0x04:
-                case 0x13:
-                case 0x15:
-                case 0x16:
-                case 0x17:
-                case 0x18:
-                case 0x19:
-                case 0x1A:
-                case 0x46:
+                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:
                     return true;
                     break;
                 default:
@@ -303,18 +277,7 @@ static bool CanWalk(int Dir){
             break;
         case 3:
             switch(Map[((Player[1]/40)*20)+((Player[0]/40)+1)]){
-                case 0x00:
-                case 0x01:
-                case 0x03:
-                case 0x04:
-                case 0x13:
-                case 0x15:
-                case 0x16:
-                case 0x17:
-                case 0x18:
-                case 0x19:
-                case 0x1A:
-                case 0x46:
+                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:
                     return true;
                     break;
                 default:
@@ -342,7 +305,7 @@ static void Input(){
             Draw();
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                 if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
-                for(int i = 0; i < 20; i++){
+                for(i = 0; i < 20; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
                     Update();
                     Rock[1]-=2;
@@ -351,7 +314,7 @@ static void Input(){
                 }
             }else{
                 if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
-                for(int i = 0; i < 8; i++){
+                for(i = 0; i < 8; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
                     Update();
                     Rock[1]-=5;
@@ -368,7 +331,7 @@ static void Input(){
             Player[2] = 0;
             Player[5] = 1;
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                for(int i = 0; i < 10; i++){
+                for(i = 0; i < 10; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[0]-=4;
@@ -376,7 +339,7 @@ static void Input(){
                 }
             }
             else{
-                for(int i = 0; i < 4; i++){
+                for(i = 0; i < 4; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[0]-=10;
@@ -398,7 +361,7 @@ static void Input(){
                 Draw();
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                     if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
-                    for(int i = 0; i < 20; i++){
+                    for(i = 0; i < 20; i++){
                         if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                         Update();
                         Rock[2]-=2;
@@ -407,7 +370,7 @@ static void Input(){
                     }
                 }else{
                     if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
-                    for(int i = 0; i < 8; i++){
+                    for(i = 0; i < 8; i++){
                         if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                         Update();
                         Rock[2]-=5;
@@ -425,7 +388,7 @@ static void Input(){
             Player[2] = 1;
             Player[5] = 1;
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                for(int i = 0; i < 10; i++){
+                for(i = 0; i < 10; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[1]-=4;
@@ -433,7 +396,7 @@ static void Input(){
                 }
             }
             else{
-                for(int i = 0; i < 4; i++){
+                for(i = 0; i < 4; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[1]-=10;
@@ -454,7 +417,7 @@ static void Input(){
             Draw();
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                 if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
-                for(int i = 0; i < 20; i++){
+                for(i = 0; i < 20; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Rock[1]+=2;
@@ -463,7 +426,7 @@ static void Input(){
                 }
             }else{
                 if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
-                for(int i = 0; i < 8; i++){
+                for(i = 0; i < 8; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Rock[1]+=5;
@@ -480,7 +443,7 @@ static void Input(){
             Player[2] = 3;
             Player[5] = 1;
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                for(int i = 0; i < 10; i++){
+                for(i = 0; i < 10; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[0]+=4;
@@ -488,7 +451,7 @@ static void Input(){
                 }
             }
             else{
-                for(int i = 0; i < 4; i++){
+                for(i = 0; i < 4; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[0]+=10;
@@ -510,7 +473,7 @@ static void Input(){
                 Draw();
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                     if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
-                    for(int i = 0; i < 20; i++){
+                    for(i = 0; i < 20; i++){
                         if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                         Update();
                         Rock[2] += 2;
@@ -519,7 +482,7 @@ static void Input(){
                     }
                 }else{
                     if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
-                    for(int i = 0; i < 8; i++){
+                    for(i = 0; i < 8; i++){
                         if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
                         Update(); 
                         Rock[2] += 5;
@@ -538,7 +501,7 @@ static void Input(){
             Player[2] = 3;
             Player[5] = 1;
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                for(int i = 0; i < 10; i++){
+                for(i = 0; i < 10; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[1] += 4;
@@ -546,7 +509,7 @@ static void Input(){
                 }
             }
             else{
-                for(int i = 0; i < 4; i++){
+                for(i = 0; i < 4; i++){
                     if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
                     Update();
                     Player[1] += 10;
@@ -592,15 +555,9 @@ static void PostionCheck(){
         case 0x19:
         case 0x1A:
             if(HardMode == true){
-                Deaths++;
-                for(int i = 0; i < 5; i++){
+                for(i = 0; i < 5; i++){
                     Draw();
                 }
-                SwitchLevel();
-            }else{
-                 for(int i = 0; i < 5; i++){
-                     Draw();
-                 }
                 CurrentLevel = 0;
                 Deaths = 0;
                 Timer[0] = 0;
@@ -608,6 +565,12 @@ static void PostionCheck(){
                 Timer[2] = 0;
                 Timer[3] = 0;
                 BeginGame();
+            }else{
+                Deaths++;
+                for(i = 0; i < 5; i++){
+                    Draw();
+                }
+                SwitchLevel();
             }
             break;
         case 0x04:
@@ -615,7 +578,7 @@ static void PostionCheck(){
             KeysInHand++;
             Map[((Player[1]/40)*20)+(Player[0]/40)] = 0x00;
             if(KeysInHand == KeysNeeded){
-                for(int i = 0; i < 360; i++){
+                for(i = 0; i < 360; i++){
                     if(Map[i] == 0x03){
                         Map[i] = 0x01;
                         break;
@@ -628,7 +591,7 @@ static void PostionCheck(){
             if(Fence[0] != 0){
                 if(Fence[0] == 1){
                     Map[((Player[1]/40)*20)+(Player[0]/40)] = 0x00;
-                    for(int i = 0; i < 360; i++){
+                    for(i = 0; i < 360; i++){
                         if(Map[i] == 0x12 || Map[i] == 0x14){
                             Map[i] = 0x00;
                             break;
@@ -636,7 +599,7 @@ static void PostionCheck(){
                     }
                 }
                 else{
-                    for(int i = 0; i < Fence[0]; i++){
+                    for(i = 0; i < Fence[0]; i++){
                         if(((Player[1]/40)*20)+(Player[0]/40) == Lock[i]){
                             Map[Lock[i]] = 0x00;
                             Map[Fence[i+1]] = 0x00;
@@ -649,7 +612,7 @@ static void PostionCheck(){
             if(OnTeleport == false){
                 OnTeleport = true;
                 if(SoundEffectsOn==true){PlaySound(KeySoundEffect);}
-                for(int i = 0; i < 360; i++){
+                for(i = 0; i < 360; i++){
                     if(i != ((Player[1]/40)*20)+(Player[0]/40)){
                         if(Map[i] == 0x46){
                             Player[0] = (i%20)*40;
@@ -673,7 +636,7 @@ static void Update(){
         if(Enimes[0] >= 45 && Rock[0] != 1){
             if(SoundEffectsOn==true){PlaySound(EnimeSoundEffect);}
             Enimes[0] = 0;
-            for(int i = 2; i < Enimes[1] + 2; i++){
+            for(i = 2; i < Enimes[1] + 2; i++){
                 switch(Map[Enimes[i]]){
                     case 0x17:					
                         if(Map[Enimes[i]-1] == 0x00){
@@ -723,7 +686,7 @@ static void Update(){
         if(Spikes[0] == 160){
             if(SoundEffectsOn==true){PlaySound(SpikeSoundEffect);}
             Spikes[0] = 0;
-            for(int i = 0; i < 360; i++){
+            for(i = 0; i < 360; i++){
                 switch(Map[i]){
                     case 0x15:
                         Map[i] = 0x16;
@@ -742,65 +705,65 @@ static void Update(){
             case 0:
                 if(Player[4] == 30){
                     Player[4] = 0;
-                    PlayerTile = PlayerTile5;
+                    PlayerTilePos = (Rectangle){1680.0f, 440.0f, 40.0f, 40.0f};
                 }
                 else if(Player[4] <= 15){
-                    PlayerTile = PlayerTile6;
+                    PlayerTilePos = (Rectangle){1720.0f, 600.0f, 40.0f, 40.0f};
                 }
                 else{
-                    PlayerTile = PlayerTile5;
+                    PlayerTilePos = (Rectangle){1680.0f, 440.0f, 40.0f, 40.0f};
                 }
                 break;
             case 1:
                 if(Player[4] == 30){
                     Player[4] = 0;
-                    PlayerTile = PlayerTile11;
+                    PlayerTilePos = (Rectangle){1600.0f, 80.0f, 40.0f, 40.0f};
                 }
                 else if(Player[4] <= 15){
-                    PlayerTile = PlayerTile12;
+                    PlayerTilePos = (Rectangle){1600.0f, 80.0f, 40.0f, 40.0f};
                 }
                 else{
-                    PlayerTile = PlayerTile11;
+                    PlayerTilePos = (Rectangle){1600.0f, 80.0f, 40.0f, 40.0f};
                 }
                 break;
             case 2:
                 if(Player[4] == 30){
                     Player[4] = 0;
-                    PlayerTile = PlayerTile9;
+                    PlayerTilePos = (Rectangle){1640.0f, 600.0f, 40.0f, 40.0f};
                 }
                 else if(Player[4] <= 15){
-                    PlayerTile = PlayerTile8;
+                    PlayerTilePos = (Rectangle){1600.0f, 320.0f, 40.0f, 40.0f};
                 }
                 else{
-                    PlayerTile = PlayerTile9;
+                    PlayerTilePos = (Rectangle){1640.0f, 600.0f, 40.0f, 40.0f};
                 }
                 break;
             case 3:
                 if(Player[4] == 30){
                     Player[4] = 0;
-                    PlayerTile = PlayerTile3;
+                    PlayerTilePos = (Rectangle){1640.0f, 40.0f, 40.0f, 40.0f};
                 }
                 else if(Player[4] <= 15){
-                    PlayerTile = PlayerTile2;
+                    PlayerTilePos = (Rectangle){1680.0f, 40.0f, 40.0f, 40.0f};
                 }
                 else{
-                    PlayerTile = PlayerTile3;
+                    PlayerTilePos = (Rectangle){1640.0f, 40.0f, 40.0f, 40.0f};
                 }
                 break;
         }
     }else{
         switch(Player[2]){
             case 0:
-                PlayerTile = PlayerTile4;
+                PlayerTilePos = (Rectangle){1720.0f, 40.0f, 40.0f, 40.0f};
                 break;
             case 1:
-                PlayerTile = PlayerTile10;
+                PlayerTilePos = (Rectangle){1640.0f, 320.0f, 40.0f, 40.0f};
                 break;
             case 2:
-                PlayerTile = PlayerTile7;
+                PlayerTilePos = (Rectangle){1600.0f, 600.0f, 40.0f, 40.0f};
                 break;
             case 3:
-                PlayerTile = PlayerTile1;
+                PlayerTilePos = (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f};
                 break;
         }
     }
@@ -824,18 +787,17 @@ static void Draw(){
                 Timer[2] = 0;
             }
             DrawBKG();
-            DrawTexture(PlayerTile, Player[0] + GameScreenStart[0], Player[1] + GameScreenStart[1], WHITE);
+            DrawTextureRec(TileSet, PlayerTilePos, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
             if(Rock[0] == 1){
-                DrawTexture(tile5, Rock[1] + GameScreenStart[0], Rock[2] + GameScreenStart[1], WHITE);
+                DrawTextureRec(TileSet, (Rectangle){1720.0f,480.0f,40.0f,40.0f}, (Vector2){Rock[1] + GameScreenStart[0], Rock[2]}, WHITE);
             }
         EndMode2D();
-        DrawFPS(10,10);
     EndDrawing();
 }
 
 void ChangeOverLevels(const unsigned char Level[]){
     if(WindowShouldClose()){ExitGame();}
-    for(int i = 0; i < 360; i++){
+    for(i = 0; i < 360; i++){
         Map[i] = Level[i];
     }
     KeysInHand = 0;
@@ -856,19 +818,18 @@ void ChangeOverLevels(const unsigned char Level[]){
 
 static void EndTransistionScreen(){
     float fade = 1.0f;
-    for(int i = 0; i < 20; i++){
+    for(i = 0; i < 20; i++){
         if(WindowShouldClose()){UnloadTextures();ExitGame();}
         if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
                 DrawBKG();
-                DrawTexture(PlayerTile, Player[0] + GameScreenStart[0], Player[1] + GameScreenStart[1], WHITE);
+                DrawTextureRec(TileSet, (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f}, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
 			EndMode2D();
                 DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
 			BeginMode2D(camera);
-                PlayerTile = PlayerTile1;
-                DrawTexture(PlayerTile, 320 + GameScreenStart[0], 340 + GameScreenStart[1], Fade(WHITE, fade));
+                DrawTextureRec(TileSet, (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f}, (Vector2){340 + GameScreenStart[0], 340}, WHITE);
                 DrawText(FormatText("%02i", CurrentLevel), 400 + GameScreenStart[0], 340 + GameScreenStart[1], 50, Fade(WHITE, fade));
             EndMode2D();
         EndDrawing();
@@ -878,27 +839,29 @@ static void EndTransistionScreen(){
 
 static void TransistionScreen(){
     float fade = 0.0f;
-    for(int i = 0; i < 20; i++){
-        if(WindowShouldClose()){ExitGame();}
-        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
+    for(i = 0; i < 20; i++){
+        if(WindowShouldClose()){
+            ExitGame();
+        }
+        if(MusicOn == true){
+            UpdateMusicStream(GameMusic);
+        } 
         BeginDrawing();
 			DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
             BeginMode2D(camera);  
-                PlayerTile = PlayerTile1;
-                DrawTexture(PlayerTile, 320 + GameScreenStart[0], 340 + GameScreenStart[1], Fade(WHITE, fade));
+                DrawTextureRec(TileSet, (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f}, (Vector2){340 + GameScreenStart[0], 340}, WHITE);
                 DrawText(FormatText("%02i", CurrentLevel), 400 + GameScreenStart[0], 340 + GameScreenStart[1], 50, Fade(WHITE, fade));
             EndMode2D();
         EndDrawing();
         fade += 0.05f;
     }
-    for(int i = 0; i < 80; i++){
+    for(i = 0; i < 80; i++){
         if(WindowShouldClose()){ExitGame();}
         if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
-                PlayerTile = PlayerTile1;
-                DrawTexture(PlayerTile, 320 + GameScreenStart[0], 340 + GameScreenStart[1], WHITE);
+                DrawTextureRec(TileSet, (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f}, (Vector2){340 + GameScreenStart[0], 340}, WHITE);
                 DrawText(FormatText("%02i", CurrentLevel), 400 + GameScreenStart[0], 340 + GameScreenStart[1], 50, WHITE);
             EndMode2D();
         EndDrawing();
@@ -925,14 +888,14 @@ void PauseMenuContent(){
 
 static void PauseMenu(){
     float fade = 0.0f;
-    for(int i = 0; i < 20; i++){
+    for(i = 0; i < 20; i++){
         if(WindowShouldClose()){UnloadTextures();ExitGame();}
         if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
                 DrawBKG();
-                DrawTexture(PlayerTile, Player[0] + GameScreenStart[0], Player[1] + GameScreenStart[1], WHITE);
+                DrawTextureRec(TileSet, (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f}, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
             EndMode2D();
             DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
             BeginMode2D(camera);
@@ -967,14 +930,14 @@ static void PauseMenu(){
         }
     ResumeMusicStream(GameMusic);
     fade = 1.0f;
-    for(int i = 0; i < 20; i++){
+    for(i = 0; i < 20; i++){
         if(WindowShouldClose()){ExitGame();}
         if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
                 DrawBKG();
-                DrawTexture(PlayerTile, Player[0] + GameScreenStart[0], Player[1] + GameScreenStart[1], WHITE);
+                DrawTextureRec(TileSet, (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f}, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
             EndMode2D();
             DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
             BeginMode2D(camera);
@@ -992,14 +955,13 @@ static void EndScreen(){
     GameCompleted();
     PauseMusicStream(GameMusic);
     PlayMusicStream(EndingMusic);
-    PlayerTile = LoadTexture("resources/Graphics/MainMenu/MainMenuPlayer.png");
     while(!WindowShouldClose() && !IsKeyDown(KEY_ESCAPE) && !IsKeyDown(KEY_ENTER) && !IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
         if(WindowShouldClose()){ExitGame();}
         UpdateCameraCenter();
         if(MusicOn == true){UpdateMusicStream(EndingMusic);} ;
         BeginDrawing();
             ClearBackground(BLACK);
-            DrawTexture(MainMenuTile, GameScreenStart[0], GameScreenStart[1], WHITE);
+            DrawTextureRec(TileSet, (Rectangle){0.0f,0.0f,800.0f,720.0f}, (Vector2){0,0}, WHITE);
             DrawText("You", 50 + GameScreenStart[0], 50 + GameScreenStart[1], 180, BLACK);
             DrawText("Excaped!", 50 + GameScreenStart[0], 200 + GameScreenStart[1], 150, BLACK);
             DrawText(FormatText("Time %02ih:%02im:%02is",Timer[3], Timer[2], Timer[1]), 50 + GameScreenStart[0], 390 + GameScreenStart[1], 50, WHITE);
