@@ -77,32 +77,6 @@ void Game();
 void UpdateCameraCenter();
 void ResumeFunct(){Resume = true;}
 
-void DrawMainMenu(){
-    for(int i = 0; i < 800; i += 40){
-        for(int j = 0; j < 720; j += 40){
-            switch(MainMenuMap[((j/40)*20)+(i/40)]){
-                case 0x30:DrawTextureRec(TileSet, (Rectangle){440.0f,120.0f,40.0f,40.0f}, (Vector2){i + GameScreenStart[0], j}, WHITE);break;
-                case 0x26:DrawTextureRec(TileSet, (Rectangle){40.0f,120.0f,40.0f,40.0f}, (Vector2){i + GameScreenStart[0], j}, WHITE);break;
-                case 0x2F:DrawTextureRec(TileSet, (Rectangle){400.0f,120.0f,40.0f,40.0f}, (Vector2){i + GameScreenStart[0], j}, WHITE);break;
-                case 0x28:DrawTextureRec(TileSet, (Rectangle){120.0f,120.0f,40.0f,40.0f}, (Vector2){i + GameScreenStart[0], j}, WHITE);break;
-                case 0x25:DrawTextureRec(TileSet, (Rectangle){440.0f,200.0f,40.0f,40.0f}, (Vector2){i + GameScreenStart[0], j}, WHITE);break;
-                case 0x24:DrawTextureRec(TileSet, (Rectangle){440.0f,80.0f,40.0f,40.0f}, (Vector2){i + GameScreenStart[0], j}, WHITE);break;
-                case 0x31:DrawTextureRec(TileSet, (Rectangle){0.0f,160.0f,40.0f,40.0f}, (Vector2){i + GameScreenStart[0], j}, WHITE);break;
-                case 0x27:DrawTextureRec(TileSet, (Rectangle){80.0f,120.0f,40.0f,40.0f}, (Vector2){i + GameScreenStart[0], j}, WHITE);break;
-                case 0x32:DrawTextureRec(TileSet, (Rectangle){40.0f,160.0f,40.0f,40.0f}, (Vector2){i + GameScreenStart[0], j}, WHITE);break;
-            }
-        }
-    }
-}
-
-void DrawButton(char* Text, int X, int Y, int Width, int Height, void Function(), Color color, Color TextColor, Color SelectionColor){
-    if((GetMouseX() > X + GameScreenStart[0]) && (GetMouseX() < X+Width + GameScreenStart[0]) && (GetMouseY() > Y) && (GetMouseY() < Y+Height)){
-        DrawRectangle(X-5 + GameScreenStart[0], Y-5, Width+10, Height+10, GRAY);
-        if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){Function();}
-    }DrawRectangle(X + GameScreenStart[0], Y, Width, Height, color); 
-    DrawText(FormatText(Text), X+10 + GameScreenStart[0], Y+5, Height-5, TextColor);
-}
-
 #include "resources/Scripts/MainMenu.c"
 
 void IntMusicAndSoundEffects(){
@@ -217,8 +191,16 @@ void GameCompleted(){
         WorstTime[2] = Timer[2];
         WorstTime[3] = Timer[3];
     }
-    if(Deaths < LeastDeathsInPlayThough && LeastDeathsInPlayThough != 0){LeastDeathsInPlayThough = Deaths;}else{LeastDeathsInPlayThough = Deaths;}
-    if(Deaths > MostDeathsInPlayThough && MostDeathsInPlayThough != 0){MostDeathsInPlayThough = Deaths;}else{MostDeathsInPlayThough = Deaths;}
+    if(Deaths < LeastDeathsInPlayThough && LeastDeathsInPlayThough != 0){
+        LeastDeathsInPlayThough = Deaths;
+    }else{
+        LeastDeathsInPlayThough = Deaths;
+    }
+    if(Deaths > MostDeathsInPlayThough && MostDeathsInPlayThough != 0){
+        MostDeathsInPlayThough = Deaths;
+    }else{
+        MostDeathsInPlayThough = Deaths;
+    }
 }
 
 void ExitGame(){
@@ -263,9 +245,13 @@ void BeginGame(){
     EndDrawing();
     float fade = 1.0f;
     for(i = 0; i < 20; i++){
-        if(WindowShouldClose()){ExitGame();}
+        if(WindowShouldClose()){
+            ExitGame();
+        }
         UpdateCameraCenter();
-        if(MusicOn == true){UpdateMusicStream(MenuMusic);}
+        if(MusicOn == true){
+            UpdateMusicStream(MenuMusic);
+        }
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
@@ -282,9 +268,15 @@ void BeginGame(){
 void Game(){
     TotalPlays++;
     if(!WindowShouldClose()){
-        if(WindowShouldClose()){ExitGame();}
-        if(SoundEffectsOn==true){PlaySound(LevelFinnishSoundEffect);}
-        if(MusicOn == true){UpdateMusicStream(MenuMusic);}
+        if(WindowShouldClose()){
+            ExitGame();
+        }
+        if(SoundEffectsOn==true){
+            PlaySound(LevelFinnishSoundEffect);
+        }
+        if(MusicOn == true){
+            UpdateMusicStream(MenuMusic);
+        }
         SwitchLevel();
         PlayMusicStream(GameMusic);
     }
@@ -316,32 +308,59 @@ bool CanWalk(int Dir){
     switch(Dir){
         case 0:
             switch(Map[(((Player[1]/40)-1)*20)+(Player[0]/40)]){
-                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:return true;break;
-                default:return false;break;
-            }break;
+                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:
+                    return true;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+            break;
         case 1:
             switch(Map[(((Player[1]/40)+1)*20)+(Player[0]/40)]){
-                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:return true;break;
-                default:return false;break;
-            }break;
+                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:
+                    return true;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+            break;
         case 2:
             switch(Map[(((Player[1]/40))*20)+((Player[0]/40)-1)]){
-                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:return true;break;
-                default:return false;break;
-                }break;
+                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:
+                    return true;
+                    break;
+                default:
+                    return false;
+                    break;
+                }
+                break;
         case 3:
             switch(Map[((Player[1]/40)*20)+((Player[0]/40)+1)]){
-                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:return true;break;
-                default:return false;break;
-            }break;
-        default:return false;break;
-    }return false;
+                case 0x00:case 0x01:case 0x03:case 0x04:case 0x13:case 0x15:case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:case 0x46:
+                    return true;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+            break;
+        default:
+            return false;
+            break;
+    }
+    return false;
 }
 
 void PlayerUpdate(){
     UpdateCameraCenter();
-    if(IsWindowHidden() || IsWindowMinimized()){PauseMenu();}
-    if(MusicOn == true){UpdateMusicStream(GameMusic);} 
+    if(IsWindowHidden() || IsWindowMinimized()){
+        PauseMenu();
+    }
+    if(MusicOn == true){
+        UpdateMusicStream(GameMusic);
+    } 
     Update();
     Draw();
 }
@@ -355,8 +374,16 @@ void Input(){
                 Player[2] = 0;
                 Player[5] = 1;
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                    for(i = 0; i < 10; i++){Player[0]-=4;PlayerUpdate();}
-                }else{for(i = 0; i < 4; i++){Player[0]-=10;PlayerUpdate();}}
+                    for(i = 0; i < 10; i++){
+                        Player[0]-=4;
+                        PlayerUpdate();
+                    }
+                }else{
+                    for(i = 0; i < 4; i++){
+                        Player[0]-=10;
+                        PlayerUpdate();
+                    }
+                }
             }
         }else{
             if(Map[((Player[1]/40)*20)+((Player[0]/40)-2)] == 0x00){
@@ -366,14 +393,27 @@ void Input(){
                 Rock[0] = 1;
                 Rock[1] = Player[0]-40;
                 Rock[2] = Player[1];
-                if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
+                if(SoundEffectsOn==true){
+                    PlaySound(BoxPushSoundEffect);
+                }
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                    for(i = 0; i < 20; i++){Rock[1]-=2;Player[0]-=2;PlayerUpdate();}
-                }else{for(i = 0; i < 8; i++){PlayerUpdate();Player[0]-=5;Rock[1]-=5;}}
+                    for(i = 0; i < 20; i++){
+                        Rock[1]-=2;
+                        Player[0]-=2;
+                        PlayerUpdate();
+                    }
+                }else{
+                    for(i = 0; i < 8; i++){
+                        PlayerUpdate();
+                        Player[0]-=5;
+                        Rock[1]-=5;
+                    }
+                }
                 Map[(((Player[1]/40))*20)+(Player[0]/40)-1] = 0x05;
                 Rock[0] = 0;
             }
-        }PostionCheck();
+        }
+        PostionCheck();
     }
     if((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_LEFT_FACE_UP) || GetGamepadAxisMovement(GAMEPAD_PLAYER1, 2) < -DeadZone) && (!IsKeyDown(KEY_DOWN) && !IsKeyDown(KEY_S))){
         if(Map[(((Player[1]/40)-1)*20)+(Player[0]/40)] != 0x05){
@@ -382,8 +422,16 @@ void Input(){
                 Player[2] = 1;
                 Player[5] = 1;
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                    for(i = 0; i < 10; i++){Player[1]-=4;PlayerUpdate();}
-                }else{for(i = 0; i < 4; i++){Player[1]-=10;PlayerUpdate();}}
+                    for(i = 0; i < 10; i++){
+                        Player[1]-=4;
+                        PlayerUpdate();
+                    }
+                }else{
+                    for(i = 0; i < 4; i++){
+                        Player[1]-=10;
+                        PlayerUpdate();
+                    }
+                }
             } 
         }else{
             if(Map[(((Player[1]/40)-2)*20)+(Player[0]/40)] == 0x00){
@@ -393,14 +441,27 @@ void Input(){
                 Rock[0] = 1;
                 Rock[1] = Player[0];
                 Rock[2] = Player[1]-40;
-                if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
+                if(SoundEffectsOn==true){
+                    PlaySound(BoxPushSoundEffect);
+                }
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                    for(i = 0; i < 20; i++){Rock[2]-=2;Player[1]-=2;PlayerUpdate();}
-                }else{for(i = 0; i < 8; i++){Rock[2]-=5;Player[1]-=5;PlayerUpdate();}}
+                    for(i = 0; i < 20; i++){
+                        Rock[2]-=2;
+                        Player[1]-=2;
+                        PlayerUpdate();
+                    }
+                }else{
+                    for(i = 0; i < 8; i++){
+                        Rock[2]-=5;
+                        Player[1]-=5;
+                        PlayerUpdate();
+                    }
+                }
                 Map[(((Player[1]/40)-1)*20)+(Player[0]/40)] = 0x05;
                 Rock[0] = 0;
             }
-        }PostionCheck();
+        }
+        PostionCheck();
     }
     if((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_LEFT_FACE_RIGHT) || GetGamepadAxisMovement(GAMEPAD_PLAYER1, 1) > DeadZone) && (!IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_A))){
         if(Map[((Player[1]/40)*20)+((Player[0]/40)+1)] != 0x05){
@@ -409,8 +470,16 @@ void Input(){
                 Player[2] = 3;
                 Player[5] = 1;
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                    for(i = 0; i < 10; i++){Player[0]+=4;PlayerUpdate();}
-                }else{for(i = 0; i < 4; i++){Player[0]+=10;PlayerUpdate();}}
+                    for(i = 0; i < 10; i++){
+                        Player[0]+=4;
+                        PlayerUpdate();
+                    }
+                }else{
+                    for(i = 0; i < 4; i++){
+                        Player[0]+=10;
+                        PlayerUpdate();
+                    }
+                }
             }
         }else if(Map[((Player[1]/40)*20)+((Player[0]/40)+2)] == 0x00){
             ButtonsPressed++;
@@ -419,13 +488,26 @@ void Input(){
             Rock[0] = 1;
             Rock[1] = Player[0]+40;
             Rock[2] = Player[1];
-            if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
+            if(SoundEffectsOn==true){
+                PlaySound(BoxPushSoundEffect);
+            }
             if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                for(i = 0; i < 20; i++){ Rock[1]+=2;Player[0]+=2;PlayerUpdate();}
-            }else{for(i = 0; i < 8; i++){Rock[1]+=5;Player[0]+=5;PlayerUpdate();}}
+                for(i = 0; i < 20; i++){
+                    Rock[1]+=2;
+                    Player[0]+=2;
+                    PlayerUpdate();
+                }
+            }else{
+                for(i = 0; i < 8; i++){
+                    Rock[1]+=5;
+                    Player[0]+=5;
+                    PlayerUpdate();
+                }
+            }
             Map[(((Player[1]/40))*20)+(Player[0]/40)+1] = 0x05;
             Rock[0] = 0;
-        }PostionCheck();        
+        }
+        PostionCheck();        
     }
     if((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_LEFT_FACE_DOWN) || GetGamepadAxisMovement(GAMEPAD_PLAYER1, 2) > DeadZone) && (!IsKeyDown(KEY_UP) && !IsKeyDown(KEY_W))){
         if(Map[(((Player[1]/40)+1)*20)+(Player[0]/40)] != 0x05){
@@ -434,8 +516,16 @@ void Input(){
                 Player[2] = 3;
                 Player[5] = 1;
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                    for(i = 0; i < 10; i++){Player[1] += 4;PlayerUpdate();}}
-                    else{for(i = 0; i < 4; i++){Player[1] += 10;PlayerUpdate();}}
+                    for(i = 0; i < 10; i++){
+                        Player[1] += 4;
+                        PlayerUpdate();
+                    }
+                }else{
+                    for(i = 0; i < 4; i++){
+                        Player[1] += 10;
+                        PlayerUpdate();
+                    }
+                }
             } 
         }else if(Map[(((Player[1]/40)+2)*20)+(Player[0]/40)] == 0x00){
             ButtonsPressed++;
@@ -444,16 +534,31 @@ void Input(){
                 Rock[0] = 1;
                 Rock[1] = Player[0];
                 Rock[2] = Player[1]+40;
-                if(SoundEffectsOn==true){PlaySound(BoxPushSoundEffect);}
+                if(SoundEffectsOn==true){
+                    PlaySound(BoxPushSoundEffect);
+                }
                 if(IsKeyDown(KEY_SPACE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){ 
-                    for(i = 0; i < 20; i++){Rock[2] += 2;Player[1] += 2;PlayerUpdate();}
-                    }else{for(i = 0; i < 8; i++){Rock[2] += 5;Player[1] += 5;PlayerUpdate();}}
+                    for(i = 0; i < 20; i++){
+                        Rock[2] += 2;
+                        Player[1] += 2;
+                        PlayerUpdate();
+                    }
+                }else{
+                    for(i = 0; i < 8; i++){
+                        Rock[2] += 5;
+                        Player[1] += 5;
+                        PlayerUpdate();
+                    }
+                }
                 Map[(((Player[1]/40)+1)*20)+(Player[0]/40)] = 0x05;
                 Rock[0] = 0;
-        }PostionCheck();
+        }
+        PostionCheck();
     }
     PostionCheck();
-    if(ButtonsPressed == 0){Player[5] = 0;}
+    if(ButtonsPressed == 0){
+        Player[5] = 0;
+    }
     if(IsKeyPressed(KEY_ENTER) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_LEFT)){
         if(HardMode == true){
             CurrentLevel = 0;
@@ -470,14 +575,20 @@ void Input(){
             SwitchLevel(); 
         }        
     }
-    if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){PauseMenu();}
-    if(IsKeyPressed(KEY_F)){FPSON=!FPSON;}
+    if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
+        PauseMenu();
+    }
+    if(IsKeyPressed(KEY_F)){
+        FPSON=!FPSON;
+    }
 }
 
 void PostionCheck(){
     switch(Map[((Player[1]/40)*20)+(Player[0]/40)]){
         case 0x01:
-            if(SoundEffectsOn==true){PlaySound(LevelFinnishSoundEffect);}
+            if(SoundEffectsOn==true){
+                PlaySound(LevelFinnishSoundEffect);
+            }
             Draw();
             CurrentLevel++;
             SwitchLevel();
@@ -498,12 +609,16 @@ void PostionCheck(){
             }else{
                 Deaths++;
                 TotalDeaths++;
-                for(i = 0; i < 5; i++){Draw();}
+                for(i = 0; i < 5; i++){
+                    Draw();
+                }
                 SwitchLevel();
             }
             break;
         case 0x04:
-            if(SoundEffectsOn==true){PlaySound(KeySoundEffect);}
+            if(SoundEffectsOn==true){
+                PlaySound(KeySoundEffect);
+            }
             KeysInHand++;
             Map[((Player[1]/40)*20)+(Player[0]/40)] = 0x00;
             if(KeysInHand == KeysNeeded){
@@ -516,7 +631,9 @@ void PostionCheck(){
             }
             break;
         case 0x13:
-            if(SoundEffectsOn==true){PlaySound(LockSoundEffect);}
+            if(SoundEffectsOn==true){
+                PlaySound(LockSoundEffect);
+            }
             if(Fence[0] != 0){
                 if(Fence[0] == 1){
                     Map[((Player[1]/40)*20)+(Player[0]/40)] = 0x00;
@@ -539,7 +656,9 @@ void PostionCheck(){
         case 0x46:
             if(OnTeleport == false){
                 OnTeleport = true;
-                if(SoundEffectsOn==true){PlaySound(KeySoundEffect);}
+                if(SoundEffectsOn==true){
+                    PlaySound(KeySoundEffect);
+                }
                 for(i = 0; i < 360; i++){
                     if(i != ((Player[1]/40)*20)+(Player[0]/40)){
                         if(Map[i] == 0x46){
@@ -552,12 +671,13 @@ void PostionCheck(){
                 }
             }
             break;
-        default:OnTeleport = false;break;
+        default:
+            OnTeleport = false;
+            break;
     }
 }
 
 void Update(){
-    //DevFeature
     if(IsFileDropped()){
         int count = 0;
         char **droppedFiles = GetDroppedFiles(&count);
@@ -566,12 +686,15 @@ void Update(){
                 UnloadTexture(TileSet);
                 TileSet = LoadTexture(droppedFiles[0]);
             }
-        }ClearDroppedFiles();
+        }
+        ClearDroppedFiles();
     }
     if(HasEnimes == true){
         Enimes[0]++;
         if(Enimes[0] >= 45 && Rock[0] != 1){
-            if(SoundEffectsOn==true){PlaySound(EnimeSoundEffect);}
+            if(SoundEffectsOn==true){
+                PlaySound(EnimeSoundEffect);
+            }
             Enimes[0] = 0;
             for(int i = 2; i < Enimes[1] + 2; i++){
                 switch(Map[Enimes[i]]){
@@ -580,8 +703,7 @@ void Update(){
                             Map[Enimes[i]] = 0x00;
                             Map[Enimes[i]-1] = 0x17;
                             Enimes[i] -= 1;
-                        }
-                        else{
+                        }else{
                             Map[Enimes[i]] = 0x19;
                         }
                         break;
@@ -590,8 +712,7 @@ void Update(){
                             Map[Enimes[i]] = 0x00;
                             Map[Enimes[i]-20] = 0x18;
                             Enimes[i] -= 20;
-                        }
-                        else{
+                        }else{
                             Map[Enimes[i]] = 0x1A;
                         }
                         break;
@@ -600,8 +721,7 @@ void Update(){
                             Map[Enimes[i]] = 0x00;
                             Map[Enimes[i]+1] = 0x19;
                             Enimes[i] += 1;
-                        }
-                        else{
+                        }else{
                             Map[Enimes[i]] = 0x17;
                         }
                         break;
@@ -610,8 +730,7 @@ void Update(){
                             Map[Enimes[i]] = 0x00;
                             Map[Enimes[i]+20] = 0x1A;
                             Enimes[i] += 20;
-                        }
-                        else{
+                        }else{
                             Map[Enimes[i]] = 0x18;
                         }
                         break;
@@ -621,7 +740,9 @@ void Update(){
     }
     if(HasSpikes == true){
         if(Spikes[0] == 160){
-            if(SoundEffectsOn==true){PlaySound(SpikeSoundEffect);}
+            if(SoundEffectsOn==true){
+                PlaySound(SpikeSoundEffect);
+            }
             Spikes[0] = 0;
             for(int i = 0; i < 360; i++){
                 switch(Map[i]){
@@ -639,28 +760,56 @@ void Update(){
     if(Player[5] == 1){
         Player[4]++;
         if(Player[2] == 0){
-           if(Player[4] == 30){Player[4] = 0;PlayerTilePos = (Rectangle){440.0f, 40.0f, 40.0f, 40.0f};}
-           else if(Player[4] <= 15){PlayerTilePos = (Rectangle){0.0f, 80.0f, 40.0f, 40.0f};}
-           else{PlayerTilePos = (Rectangle){440.0f, 40.0f, 40.0f, 40.0f};} 
+           if(Player[4] == 30){
+               Player[4] = 0;
+               PlayerTilePos = (Rectangle){440.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] <= 15){
+               PlayerTilePos = (Rectangle){0.0f, 80.0f, 40.0f, 40.0f};
+            }else{
+               PlayerTilePos = (Rectangle){440.0f, 40.0f, 40.0f, 40.0f};
+            } 
         }else if(Player[2] == 1){
-           if(Player[4] == 30){Player[4] = 0;PlayerTilePos = (Rectangle){200.0f, 40.0f, 40.0f, 40.0f};}
-            else if(Player[4] <= 15){PlayerTilePos = (Rectangle){240.0f, 40.0f, 40.0f, 40.0f};}
-            else{PlayerTilePos = (Rectangle){200.0f, 40.0f, 40.0f, 40.0f};}
+            if(Player[4] == 30){
+                Player[4] = 0;
+                PlayerTilePos = (Rectangle){200.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] <= 15){
+                PlayerTilePos = (Rectangle){240.0f, 40.0f, 40.0f, 40.0f};
+            }else{
+                PlayerTilePos = (Rectangle){200.0f, 40.0f, 40.0f, 40.0f};
+            }
         }else if(Player[2] == 2){
-            if(Player[4] == 30){Player[4] = 0;PlayerTilePos = (Rectangle){80.0f, 40.0f, 40.0f, 40.0f};}
-            else if(Player[4] <= 15){PlayerTilePos = (Rectangle){120.0f, 40.0f, 40.0f, 40.0f};}
-            else{PlayerTilePos = (Rectangle){80.0f, 40.0f, 40.0f, 40.0f};}
+            if(Player[4] == 30){
+                Player[4] = 0;
+                PlayerTilePos = (Rectangle){80.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] <= 15){
+                PlayerTilePos = (Rectangle){120.0f, 40.0f, 40.0f, 40.0f};
+            }else{
+                PlayerTilePos = (Rectangle){80.0f, 40.0f, 40.0f, 40.0f};
+            }
         }else if(Player[2] == 3){
-            if(Player[4] == 30){Player[4] = 0;PlayerTilePos = (Rectangle){320.0f, 40.0f, 40.0f, 40.0f};}
-            else if(Player[4] <= 15){PlayerTilePos = (Rectangle){360.0f, 40.0f, 40.0f, 40.0f};}
-            else{PlayerTilePos = (Rectangle){320.0f, 40.0f, 40.0f, 40.0f};}
+            if(Player[4] == 30){
+                Player[4] = 0;
+                PlayerTilePos = (Rectangle){320.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] <= 15){
+                PlayerTilePos = (Rectangle){360.0f, 40.0f, 40.0f, 40.0f};
+            }else{
+                PlayerTilePos = (Rectangle){320.0f, 40.0f, 40.0f, 40.0f};
+            }
         }
     }else{
         switch(Player[2]){
-            case 0:PlayerTilePos = (Rectangle){400.0f, 40.0f, 40.0f, 40.0f};break;
-            case 1:PlayerTilePos = (Rectangle){160.0f, 40.0f, 40.0f, 40.0f};break;
-            case 2:PlayerTilePos = (Rectangle){40.0f, 40.0f, 40.0f, 40.0f};break;
-            case 3:PlayerTilePos = (Rectangle){280.0f, 40.0f, 40.0f, 40.0f};break;
+            case 0:
+                PlayerTilePos = (Rectangle){400.0f, 40.0f, 40.0f, 40.0f};
+                break;
+            case 1:
+                PlayerTilePos = (Rectangle){160.0f, 40.0f, 40.0f, 40.0f};
+                break;
+            case 2:
+                PlayerTilePos = (Rectangle){40.0f, 40.0f, 40.0f, 40.0f};
+                break;
+            case 3:
+                PlayerTilePos = (Rectangle){280.0f, 40.0f, 40.0f, 40.0f};
+                break;
         }
     }
 }
@@ -670,23 +819,47 @@ void Draw(){
     BeginDrawing();
         BeginMode2D(camera);
             Timer[0] += 1;
-            if(Timer[0] > 59){Timer[1]++;Timer[0] = 0;}
-            if(Timer[1] > 59){Timer[2]++;Timer[1] = 0;}
-            if(Timer[2] > 59){Timer[3]++;Timer[2] = 0;}
+            if(Timer[0] > 59){
+                Timer[1]++;
+                Timer[0] = 0;
+            }
+            if(Timer[1] > 59){
+                Timer[2]++;
+                Timer[1] = 0;
+            }
+            if(Timer[2] > 59){
+                Timer[3]++;
+                Timer[2] = 0;
+            }
             TotalPlayTime[0]++;
-            if(TotalPlayTime[0] > 59){TotalPlayTime[1]++;TotalPlayTime[0] = 0;}
-            if(TotalPlayTime[1] > 59){TotalPlayTime[2]++;TotalPlayTime[1] = 0;}
-            if(TotalPlayTime[2] > 59){TotalPlayTime[3]++;TotalPlayTime[2] = 0;}
+            if(TotalPlayTime[0] > 59){
+                TotalPlayTime[1]++;
+                TotalPlayTime[0] = 0;
+            }
+            if(TotalPlayTime[1] > 59){
+                TotalPlayTime[2]++;
+                TotalPlayTime[1] = 0;
+            }
+            if(TotalPlayTime[2] > 59){
+                TotalPlayTime[3]++;
+                TotalPlayTime[2] = 0;
+            }
             DrawBKG();
             DrawTextureRec(TileSet, PlayerTilePos, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
-            if(Rock[0]==1){DrawTextureRec(TileSet,(Rectangle){160.0f,0.0f,40.0f,40.0f},(Vector2){Rock[1]+GameScreenStart[0],Rock[2]},WHITE);}
+            if(Rock[0]==1){
+                DrawTextureRec(TileSet,(Rectangle){160.0f,0.0f,40.0f,40.0f},(Vector2){Rock[1]+GameScreenStart[0],Rock[2]},WHITE);
+            }
         EndMode2D();
-        if(FPSON == true){DrawFPS(10,10);}
+        if(FPSON == true){
+            DrawFPS(10,10);
+        }
     EndDrawing();
 }
 
 void ChangeOverLevels(const unsigned char Level[]){
-    if(WindowShouldClose()){ExitGame();}
+    if(WindowShouldClose()){
+        ExitGame();
+    }
     for(i = 0; i < 360; i++){
         Map[i] = Level[i];
     }
@@ -709,8 +882,13 @@ void ChangeOverLevels(const unsigned char Level[]){
 void EndTransistionScreen(){
     float fade = 1.0f;
     for(i = 0; i < 20; i++){
-        if(WindowShouldClose()){UnloadTextures();ExitGame();}
-        if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
+        if(WindowShouldClose()){
+            UnloadTextures();
+            ExitGame();
+        }
+        if(MusicOn == true){
+            UpdateMusicStream(GameMusic);
+        }
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
@@ -746,8 +924,12 @@ void TransistionScreen(){
         fade += 0.05f;
     }
     for(i = 0; i < 80; i++){
-        if(WindowShouldClose()){ExitGame();}
-        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
+        if(WindowShouldClose()){
+            ExitGame();
+        }
+        if(MusicOn == true){
+            UpdateMusicStream(GameMusic);
+        }
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
@@ -758,86 +940,196 @@ void TransistionScreen(){
     }
 }
 
-void PauseMenuContent(){
-    if(WindowShouldClose()){ExitGame();}
-    if(IsWindowResized()){
-        camera.zoom = (float)GetScreenHeight()/720;
-        GameScreenStart[0] = (GetScreenWidth()-800)/2;
-    }
-    if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
-    BeginDrawing();
-        BeginMode2D(camera);
-            ClearBackground(BLACK);
-            DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, WHITE);
-            DrawButton("Resume", 230, 380, 300, 50, ResumeFunct, WHITE, BLACK, GREEN);
-            DrawButton("MainMenu", 230, 440, 300, 50, BeginGame, WHITE, BLACK, GREEN);
-            DrawButton("Exit", 230, 500, 300, 50, ExitGame, WHITE, BLACK, GREEN);
-        EndMode2D();
-    EndDrawing();
-}
-
 void PauseMenu(){
+    ButtonNum = 3;
     float fade = 0.0f;
-    for(i = 0; i < 20; i++){
-        if(WindowShouldClose()){UnloadTextures();ExitGame();}
-        if(MusicOn == true){UpdateMusicStream(GameMusic);} ;
-        BeginDrawing();
-            BeginMode2D(camera);
-                ClearBackground(BLACK);
-                DrawBKG();
-                DrawTextureRec(TileSet, (Rectangle){280.0f, 40.0f, 40.0f, 40.0f}, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
-            EndMode2D();
-            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
-            BeginMode2D(camera);
-                DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, Fade(WHITE, fade));
-                DrawButton("Resume", 230, 380, 300, 50, ResumeFunct, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
-                DrawButton("MainMenu", 230, 440, 300, 50, BeginGame, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
-                DrawButton("Exit", 230, 500, 300, 50, ExitGame, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
-            EndMode2D();
-        EndDrawing();
-        fade += 0.05f;
-    }
-    Resume = false;
-    PauseMusicStream(GameMusic);
-    while(IsKeyDown(KEY_ESCAPE)){PauseMenuContent();}
-    while(Resume == false){
-        if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){break;}
-        if(WindowShouldClose()){ExitGame();}
-        if(IsWindowResized()){
-            camera.zoom = (float)GetScreenHeight()/720;
-            GameScreenStart[0] = (GetScreenWidth()-800)/2;
+    for(i = 0; i < 40; i++){
+        if(WindowShouldClose()){
+            ExitGame();
         }
-        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
+        if(MusicOn == true){
+            UpdateMusicStream(GameMusic);
+        } 
+        BeginDrawing();
+			DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
+            BeginMode2D(camera);  
+                DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, Fade(WHITE, fade));
+            EndMode2D();
+            DrawRectangle(230 + GameScreenStart[0], 380, 300, 50, Fade(WHITE, fade));
+            DrawText("Resume", 235 + GameScreenStart[0], 385, 45, Fade(BLACK, fade));
+            DrawRectangle(230 + GameScreenStart[0], 440, 300, 50, Fade(WHITE, fade));
+            DrawText("Main Menu", 235 + GameScreenStart[0], 445, 45, Fade(BLACK, fade));
+            DrawRectangle(230 + GameScreenStart[0], 500, 300, 50, Fade(WHITE, fade));
+            DrawText("Exit", 235 + GameScreenStart[0], 505, 45, Fade(BLACK, fade));
+        EndDrawing();
+        fade += 0.025f;
+    }
+    while(1){
+        UpdateCameraCenter();
+        if(MenuControllerMode == false){
+            if(IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_LEFT_FACE_UP)){
+                MenuControllerMode = true;
+                CurserPos = ButtonNum;
+            }
+            if(IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_LEFT_FACE_DOWN)){
+                MenuControllerMode = true;
+                CurserPos = ButtonNum;
+            }
+        }
+        if(MenuControllerMode == true){
+            if(IsKeyPressed(KEY_W)||IsKeyPressed(KEY_UP)||IsGamepadButtonPressed(GAMEPAD_PLAYER1,GAMEPAD_BUTTON_LEFT_FACE_UP)){
+                MenuControllerMode = true;
+                if(SoundEffectsOn == true){
+                    PlaySound(MenuChange);
+                }
+                if(CurserPos > 0){
+                    CurserPos--;
+                }else{
+                    CurserPos = ButtonNum-1;
+                }
+            }
+            if(IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_LEFT_FACE_DOWN)){
+                MenuControllerMode = true;
+                if(SoundEffectsOn == true){
+                    PlaySound(MenuChange);
+                }
+                if(CurserPos + 1 <= ButtonNum-1){
+                    CurserPos++;
+                }else{
+                    CurserPos = 0;
+                }
+            }
+        }
+        if(WindowShouldClose()){
+            ExitGame();
+        }
+        if(MusicOn == true){
+            UpdateMusicStream(MenuMusic);
+        }
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
                 DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, WHITE);
-                DrawButton("Resume", 230, 380, 300, 50, ResumeFunct, WHITE, BLACK, GREEN);
-                DrawButton("MainMenu", 230, 440, 300, 50, BeginGame, WHITE, BLACK, GREEN);
-                DrawButton("Exit", 230, 500, 300, 50, ExitGame, WHITE, BLACK, GREEN);
             EndMode2D();
+            if((GetMouseX() > 230 + GameScreenStart[0]) && (GetMouseX() < 530 + GameScreenStart[0]) && (GetMouseY() > 380) && (GetMouseY() < 430)){
+                if(CurserPos != 0){
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuChange);
+                    }
+                    CurserPos = 0;
+                }
+                MenuControllerMode = false;
+                DrawRectangle(225 + GameScreenStart[0], 375, 310, 60, GRAY);
+                DrawRectangle(230 + GameScreenStart[0], 380, 300, 50, WHITE);
+                if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuSelect);
+                    }
+                    break;
+                }
+            }else if(MenuControllerMode == true && CurserPos == 0){
+                DrawRectangle(225 + GameScreenStart[0], 375, 310, 60, GRAY);
+                DrawRectangle(230 + GameScreenStart[0], 380, 300, 50, WHITE);
+                if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuSelect);
+                    }
+                    break;
+                }
+            }else{
+                if(CurserPos == 0){
+                    CurserPos = ButtonNum;
+                }
+                DrawRectangle(230 + GameScreenStart[0], 380, 300, 50, WHITE);
+            }
+            DrawText("Resume", 235 + GameScreenStart[0], 385, 45, MenuTextColour);
+            if((GetMouseX() > 230 + GameScreenStart[0]) && (GetMouseX() < 530 + GameScreenStart[0]) && (GetMouseY() > 440) && (GetMouseY() < 490)){
+                if(CurserPos != 1){
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuChange);
+                    }
+                    CurserPos = 1;
+                }
+                MenuControllerMode = false;
+                DrawRectangle(225 + GameScreenStart[0], 435, 310, 60, GRAY);
+                DrawRectangle(230 + GameScreenStart[0], 440, 300, 50, WHITE);
+                if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuSelect);
+                    }
+                    BeginGame();
+                }
+            }else if(MenuControllerMode == true && CurserPos == 1){
+                DrawRectangle(225 + GameScreenStart[0], 435, 310, 60, GRAY);
+                DrawRectangle(230 + GameScreenStart[0], 440, 300, 50, WHITE);
+                if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuSelect);
+                    }
+                    BeginGame();
+                }
+            }else{
+                if(CurserPos == 1){
+                    CurserPos = ButtonNum;
+                }
+                DrawRectangle(230 + GameScreenStart[0], 440, 300, 50, WHITE);
+            }
+            DrawText("Main Menu", 235 + GameScreenStart[0], 445, 45, MenuTextColour);
+            if((GetMouseX() > 230 + GameScreenStart[0]) && (GetMouseX() < 530 + GameScreenStart[0]) && (GetMouseY() > 500) && (GetMouseY() < 550)){
+                if(CurserPos != 2){
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuChange);
+                    }
+                    CurserPos = 2;
+                }
+                MenuControllerMode = false;
+                DrawRectangle(225 + GameScreenStart[0], 495, 310, 60, GRAY);
+                DrawRectangle(230 + GameScreenStart[0], 500, 300, 50, WHITE);
+                if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
+                    ExitGame();
+                }
+            }else if(MenuControllerMode == true && CurserPos == 2){
+                DrawRectangle(225 + GameScreenStart[0], 495, 310, 60, GRAY);
+                DrawRectangle(230 + GameScreenStart[0], 500, 300, 50, WHITE);
+                if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
+                    ExitGame();
+                }
+            }else{
+                if(CurserPos == 2){
+                    CurserPos = ButtonNum;
+                }
+            DrawRectangle(230 + GameScreenStart[0], 500, 300, 50, WHITE);} 
+            DrawText("Exit", 235 + GameScreenStart[0], 505, 45, MenuTextColour);
         EndDrawing();
+        if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)){
+            break;
         }
-    ResumeMusicStream(GameMusic);
+    }
     fade = 1.0f;
-    for(i = 0; i < 20; i++){
-        if(WindowShouldClose()){ExitGame();}
-        if(MusicOn == true){UpdateMusicStream(GameMusic);} ; 
+    for(i = 0; i < 40; i++){
+        if(WindowShouldClose()){
+            UnloadTextures();
+            ExitGame();
+        }
+        if(MusicOn == true){
+            UpdateMusicStream(GameMusic);
+        }
         BeginDrawing();
             BeginMode2D(camera);
                 ClearBackground(BLACK);
                 DrawBKG();
                 DrawTextureRec(TileSet, (Rectangle){280.0f, 40.0f, 40.0f, 40.0f}, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
-            EndMode2D();
-            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
-            BeginMode2D(camera);
                 DrawText("PAUSE", 150 + GameScreenStart[0], 100 + GameScreenStart[1], 150, Fade(WHITE, fade));
-                DrawButton("Resume", 230, 380, 300, 50, ResumeFunct, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
-                DrawButton("MainMenu", 230, 440, 300, 50, BeginGame, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
-                DrawButton("Exit", 230, 500, 300, 50, ExitGame, Fade(WHITE, fade),Fade(BLACK, fade),Fade(GREEN, fade));
-            EndMode2D();
+			EndMode2D();
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
+            DrawRectangle(230 + GameScreenStart[0], 380, 300, 50, Fade(WHITE, fade));
+            DrawText("Resume", 235 + GameScreenStart[0], 385, 45, Fade(BLACK, fade));
+            DrawRectangle(230 + GameScreenStart[0], 440, 300, 50, Fade(WHITE, fade));
+            DrawText("Main Menu", 235 + GameScreenStart[0], 445, 45, Fade(BLACK, fade));
+            DrawRectangle(230 + GameScreenStart[0], 500, 300, 50, Fade(WHITE, fade));
+            DrawText("Exit", 235 + GameScreenStart[0], 505, 45, Fade(BLACK, fade));
         EndDrawing();
-        fade -= 0.05f;
+        fade -= 0.025f;
     }
 }
 
@@ -845,13 +1137,19 @@ void EndScreen(){
     GameCompleted();
     PauseMusicStream(GameMusic);
     PlayMusicStream(EndingMusic);
-    if(HardMode == true){HardModeBeaten = true;}
+    if(HardMode == true){
+        HardModeBeaten = true;
+    }
     CurrentLevel = 0;
     TotalFinnished++;
     while(!WindowShouldClose() && !IsKeyDown(KEY_ESCAPE) && !IsKeyDown(KEY_ENTER) && !IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
-        if(WindowShouldClose()){ExitGame();}
+        if(WindowShouldClose()){
+            ExitGame();
+        }
         UpdateCameraCenter();
-        if(MusicOn == true){UpdateMusicStream(EndingMusic);} ;
+        if(MusicOn == true){
+            UpdateMusicStream(EndingMusic);
+        }
         BeginDrawing();
             ClearBackground(BLACK);
             DrawMainMenu();
@@ -859,7 +1157,9 @@ void EndScreen(){
             DrawText("Excaped!", 50 + GameScreenStart[0], 200 + GameScreenStart[1], 150, BLACK);
             DrawText(FormatText("Time %02ih:%02im:%02is",Timer[3], Timer[2], Timer[1]), 50 + GameScreenStart[0], 390 + GameScreenStart[1], 50, WHITE);
             DrawText(FormatText("Deaths %02i", Deaths), 50 + GameScreenStart[0], 440 + GameScreenStart[1], 50, WHITE);
-            if((BestTime[1]+(BestTime[2]*60)+(BestTime[3]*360)) > 0){DrawText(FormatText("Best Time %02ih:%02im:%02is",BestTime[3], BestTime[2], BestTime[1]), 50 + GameScreenStart[0], 490 + GameScreenStart[1], 50, WHITE);}
+            if((BestTime[1]+(BestTime[2]*60)+(BestTime[3]*360)) > 0){
+                DrawText(FormatText("Best Time %02ih:%02im:%02is",BestTime[3], BestTime[2], BestTime[1]), 50 + GameScreenStart[0], 490 + GameScreenStart[1], 50, WHITE);
+            }
         EndDrawing();
     }
     Deaths = 0;

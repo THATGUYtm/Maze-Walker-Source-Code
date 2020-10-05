@@ -99,8 +99,11 @@ void StatsMenu(){
             DrawText(FormatText("Worst Time: %02i:%02i.%02i", WorstTime[3], WorstTime[2], WorstTime[1]), 70 + GameScreenStart[0], 350, 35, MenuTextColour);
             DrawText(FormatText("Least Amount Of Deaths: %02i", LeastDeathsInPlayThough), 70 + GameScreenStart[0], 400, 35, MenuTextColour);
             DrawText(FormatText("Most Deaths In Game Compleion: %02i", MostDeathsInPlayThough), 70 + GameScreenStart[0], 450, 35, MenuTextColour);
-            if(HardModeBeaten == true){DrawText("Game Beaten Of Hard Mode: Yes", 70 + GameScreenStart[0], 500, 35, MenuTextColour);
-            }else{DrawText("Game Beaten Of Hard Mode: No", 70 + GameScreenStart[0], 500, 35, MenuTextColour);}
+            if(HardModeBeaten == true){
+                DrawText("Game Beaten Of Hard Mode: Yes", 70 + GameScreenStart[0], 500, 35, MenuTextColour);
+            }else{
+                DrawText("Game Beaten Of Hard Mode: No", 70 + GameScreenStart[0], 500, 35, MenuTextColour);
+            ```````````````````}
             DrawText(FormatText("Best Time: %02i:%02i.%02i", BestTime[3], BestTime[2], BestTime[1]), 70 + GameScreenStart[0], 550, 35, MenuTextColour);
             DrawText("Back", 565 + GameScreenStart[0], 635, 35, MenuTextColour);
         EndDrawing();
@@ -180,7 +183,9 @@ void ModeSelect(){
                 DrawRectangle(295 + GameScreenStart[0], 430, 210, 45, BLACK);
                 DrawRectangle(300 + GameScreenStart[0], 435, 200, 35, WHITE);
                 if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-                    if(SoundEffectsOn == true){PlaySound(MenuSelect);}
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuSelect);
+                    }
                     CurrentLevel = 1;
                     Timer[0] = 0;
                     Timer[1] = 0;
@@ -194,7 +199,9 @@ void ModeSelect(){
                 DrawRectangle(295 + GameScreenStart[0], 430, 210, 45, BLACK);
                 DrawRectangle(300 + GameScreenStart[0], 435, 200, 35, WHITE);
                 if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                    if(SoundEffectsOn == true){PlaySound(MenuSelect);}
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuSelect);
+                    }
                     CurrentLevel = 1;
                     Timer[0] = 0;
                     Timer[1] = 0;
@@ -205,7 +212,9 @@ void ModeSelect(){
                     Game();
                 }
             }else{
-                if(CurserPos == 0){CurserPos = ButtonNum;}
+                if(CurserPos == 0){
+                    CurserPos = ButtonNum;
+                }
                 DrawRectangle(300 + GameScreenStart[0], 435, 200, 35, WHITE);
             }
             DrawText("Normal", 315 + GameScreenStart[0], 435, 35, MenuTextColour);
@@ -220,7 +229,9 @@ void ModeSelect(){
                 DrawRectangle(295 + GameScreenStart[0], 475, 210, 45, BLACK);
                 DrawRectangle(300 + GameScreenStart[0], 480, 200, 35, WHITE);
                 if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-                    if(SoundEffectsOn == true){PlaySound(MenuSelect);}
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuSelect);
+                    }
                     CurrentLevel = 1;
                     Timer[0] = 0;
                     Timer[1] = 0;
@@ -234,7 +245,9 @@ void ModeSelect(){
                 DrawRectangle(295 + GameScreenStart[0], 475, 210, 45, BLACK);
                 DrawRectangle(300 + GameScreenStart[0], 480, 200, 35, WHITE);
                 if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                    if(SoundEffectsOn == true){PlaySound(MenuSelect);}
+                    if(SoundEffectsOn == true){
+                        PlaySound(MenuSelect);
+                    }
                     CurrentLevel = 1;
                     Timer[0] = 0;
                     Timer[1] = 0;
@@ -493,7 +506,9 @@ void OptionMenu(){
                 }
                 if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                     TileSetChoice++;
-                    if(TileSetChoice > 2){TileSetChoice = 0;}
+                    if(TileSetChoice > 2){
+                        TileSetChoice = 0;
+                    }
                     intTextures();
                     if(SoundEffectsOn == true){
                         PlaySound(MenuSelect);
@@ -507,7 +522,9 @@ void OptionMenu(){
                 DrawRectangle(50 + GameScreenStart[0], 440, 500, 50, WHITE);
                 if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                     TileSetChoice++;
-                    if(TileSetChoice > 2){TileSetChoice = 0;}
+                    if(TileSetChoice > 2){
+                        TileSetChoice = 0;
+                    }
                     intTextures();
                     if(SoundEffectsOn == true){
                         PlaySound(MenuSelect);
@@ -526,8 +543,11 @@ void OptionMenu(){
             }else if(TileSetChoice == 2){
                 DrawText("TileSet: Modern", 55 + GameScreenStart[0], 440, 50, MenuTextColour);
             }
-            if(SoundEffectsOn == true){DrawText("Sound Effects: On", 55 + GameScreenStart[0], 370, 50, MenuTextColour);
-            }else{DrawText("Sound Effects: Off", 55 + GameScreenStart[0], 370, 50, MenuTextColour);}
+            if(SoundEffectsOn == true){
+                DrawText("Sound Effects: On", 55 + GameScreenStart[0], 370, 50, MenuTextColour);
+            }else{
+                DrawText("Sound Effects: Off", 55 + GameScreenStart[0], 370, 50, MenuTextColour);
+            }
             DrawText("Back", 565 + GameScreenStart[0], 635, 35, MenuTextColour);
             DrawText("Stats", 305 + GameScreenStart[0], 635, 35, MenuTextColour);
         EndDrawing();
