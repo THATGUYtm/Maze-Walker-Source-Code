@@ -104,6 +104,10 @@ void StatsMenu(){
             DrawText(FormatText("Best Time: %02i:%02i.%02i", BestTime[3], BestTime[2], BestTime[1]), 70 + GameScreenStart[0], 550, 35, MenuTextColour);
             DrawText("Back", 565 + GameScreenStart[0], 635, 35, MenuTextColour);
         EndDrawing();
+        if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)){
+            ButtonNum = 5;
+            break;
+        }
     }
 }
 
@@ -286,6 +290,13 @@ void ModeSelect(){
             } 
             DrawText("Back", 315 + GameScreenStart[0], 525, 35, MenuTextColour);
         EndDrawing();
+        if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)){
+            BeginDrawing();
+                ClearBackground(MenuTextColour);
+            EndDrawing();
+            MainMenuSection();
+            Game();
+        }
     }
 }
 
@@ -520,6 +531,9 @@ void OptionMenu(){
             DrawText("Back", 565 + GameScreenStart[0], 635, 35, MenuTextColour);
             DrawText("Stats", 305 + GameScreenStart[0], 635, 35, MenuTextColour);
         EndDrawing();
+        if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)){
+            break;
+        }
     }
 }
 

@@ -785,7 +785,7 @@ void PauseMenu(){
             BeginMode2D(camera);
                 ClearBackground(BLACK);
                 DrawBKG();
-                DrawTextureRec(TileSet, (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f}, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
+                DrawTextureRec(TileSet, (Rectangle){280.0f, 40.0f, 40.0f, 40.0f}, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
             EndMode2D();
             DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
             BeginMode2D(camera);
@@ -827,7 +827,7 @@ void PauseMenu(){
             BeginMode2D(camera);
                 ClearBackground(BLACK);
                 DrawBKG();
-                DrawTextureRec(TileSet, (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f}, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
+                DrawTextureRec(TileSet, (Rectangle){280.0f, 40.0f, 40.0f, 40.0f}, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
             EndMode2D();
             DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
             BeginMode2D(camera);
