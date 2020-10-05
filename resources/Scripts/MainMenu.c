@@ -103,7 +103,7 @@ void StatsMenu(){
                 DrawText("Game Beaten Of Hard Mode: Yes", 70 + GameScreenStart[0], 500, 35, MenuTextColour);
             }else{
                 DrawText("Game Beaten Of Hard Mode: No", 70 + GameScreenStart[0], 500, 35, MenuTextColour);
-            ```````````````````}
+            }
             DrawText(FormatText("Best Time: %02i:%02i.%02i", BestTime[3], BestTime[2], BestTime[1]), 70 + GameScreenStart[0], 550, 35, MenuTextColour);
             DrawText("Back", 565 + GameScreenStart[0], 635, 35, MenuTextColour);
         EndDrawing();
