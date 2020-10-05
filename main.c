@@ -55,6 +55,7 @@ bool Resume = false;
 bool MenuControllerMode = false;
 bool HardMode = false;
 bool HardModeBeaten;
+bool FPSON = false;
 
 #include "resources/Scripts/BGBKG.c"
 
@@ -161,6 +162,7 @@ void LoadSave(){
     LeastDeathsInPlayThough = LoadStorageValue(20);
     MostDeathsInPlayThough = LoadStorageValue(21);
     HardModeBeaten = LoadStorageValue(22);
+    TotalFinnished = LoadStorageValue(23);
 }
 
 void SaveSave(){
@@ -187,6 +189,7 @@ void SaveSave(){
     SaveStorageValue(20, LeastDeathsInPlayThough);
     SaveStorageValue(21, MostDeathsInPlayThough);
     SaveStorageValue(22, HardModeBeaten);
+    SaveStorageValue(23, TotalFinnished);
 }
 
 void GameCompleted(){
@@ -369,8 +372,8 @@ void Input(){
                 }else{for(i = 0; i < 8; i++){PlayerUpdate();Player[0]-=5;Rock[1]-=5;}}
                 Map[(((Player[1]/40))*20)+(Player[0]/40)-1] = 0x05;
                 Rock[0] = 0;
-            }PostionCheck();
-        }
+            }
+        }PostionCheck();
     }
     if((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_LEFT_FACE_UP) || GetGamepadAxisMovement(GAMEPAD_PLAYER1, 2) < -DeadZone) && (!IsKeyDown(KEY_DOWN) && !IsKeyDown(KEY_S))){
         if(Map[(((Player[1]/40)-1)*20)+(Player[0]/40)] != 0x05){
@@ -449,6 +452,7 @@ void Input(){
                 Rock[0] = 0;
         }PostionCheck();
     }
+    PostionCheck();
     if(ButtonsPressed == 0){Player[5] = 0;}
     if(IsKeyPressed(KEY_ENTER) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_LEFT)){
         if(HardMode == true){
@@ -467,6 +471,7 @@ void Input(){
         }        
     }
     if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){PauseMenu();}
+    if(IsKeyPressed(KEY_F)){FPSON=!FPSON;}
 }
 
 void PostionCheck(){
@@ -477,11 +482,7 @@ void PostionCheck(){
             CurrentLevel++;
             SwitchLevel();
             break;
-        case 0x16:
-        case 0x17:
-        case 0x18:
-        case 0x19:
-        case 0x1A:
+        case 0x16:case 0x17:case 0x18:case 0x19:case 0x1A:
             if(HardMode == true){
                 for(i = 0; i < 5; i++){
                     Draw();
@@ -497,9 +498,7 @@ void PostionCheck(){
             }else{
                 Deaths++;
                 TotalDeaths++;
-                for(i = 0; i < 5; i++){
-                    Draw();
-                }
+                for(i = 0; i < 5; i++){Draw();}
                 SwitchLevel();
             }
             break;
@@ -527,8 +526,7 @@ void PostionCheck(){
                             break;
                         }
                     }
-                }
-                else{
+                }else{
                     for(i = 0; i < Fence[0]; i++){
                         if(((Player[1]/40)*20)+(Player[0]/40) == Lock[i]){
                             Map[Lock[i]] = 0x00;
@@ -554,9 +552,7 @@ void PostionCheck(){
                 }
             }
             break;
-        default:
-            OnTeleport = false;
-            break;
+        default:OnTeleport = false;break;
     }
 }
 
@@ -572,43 +568,73 @@ void Update(){
             }
         }ClearDroppedFiles();
     }
-    Enimes[0]++;
-    if(Enimes[0] > 44 && Rock[0] != 1 && HasEnimes == true){
-        if(SoundEffectsOn==true){PlaySound(EnimeSoundEffect);}
-        Enimes[0] = 0;
-        for(i = 2; i < Enimes[1] + 2; i++){
-            if(Map[Enimes[i]] == 0x17){
-                if(Map[Enimes[i]-1] == 0x00){
-                    Map[Enimes[i]] = 0x00;
-                    Map[Enimes[i]-1] = 0x17;
-                    Enimes[i] -= 1;
-                }else{Map[Enimes[i]] = 0x19;}
-            }else if(Map[Enimes[i]] == 0x18){
-                if(Map[Enimes[i]-20] == 0x00){
-                    Map[Enimes[i]] = 0x00;
-                    Map[Enimes[i]-20] = 0x18;
-                    Enimes[i] -= 20;
-                }else{Map[Enimes[i]] = 0x1A;}
-            }else if(Map[Enimes[i]] == 0x19){
-                if(Map[Enimes[i]+1] == 0x00){
-                    Map[Enimes[i]] = 0x00;
-                    Map[Enimes[i]+1] = 0x19;
-                    Enimes[i] += 1;
-                }else{Map[Enimes[i]] = 0x17;}
-            }else if(Map[Enimes[i]] == 0x1A){
-                if(Map[Enimes[i]+20] == 0x00){
-                    Map[Enimes[i]] = 0x00;
-                    Map[Enimes[i]+20] = 0x1A;
-                    Enimes[i] += 20;
-                }else{Map[Enimes[i]] = 0x18;}
+    if(HasEnimes == true){
+        Enimes[0]++;
+        if(Enimes[0] >= 45 && Rock[0] != 1){
+            if(SoundEffectsOn==true){PlaySound(EnimeSoundEffect);}
+            Enimes[0] = 0;
+            for(int i = 2; i < Enimes[1] + 2; i++){
+                switch(Map[Enimes[i]]){
+                    case 0x17:					
+                        if(Map[Enimes[i]-1] == 0x00){
+                            Map[Enimes[i]] = 0x00;
+                            Map[Enimes[i]-1] = 0x17;
+                            Enimes[i] -= 1;
+                        }
+                        else{
+                            Map[Enimes[i]] = 0x19;
+                        }
+                        break;
+                    case 0x18:
+                        if(Map[Enimes[i]-20] == 0x00){
+                            Map[Enimes[i]] = 0x00;
+                            Map[Enimes[i]-20] = 0x18;
+                            Enimes[i] -= 20;
+                        }
+                        else{
+                            Map[Enimes[i]] = 0x1A;
+                        }
+                        break;
+                    case 0x19:
+                        if(Map[Enimes[i]+1] == 0x00){
+                            Map[Enimes[i]] = 0x00;
+                            Map[Enimes[i]+1] = 0x19;
+                            Enimes[i] += 1;
+                        }
+                        else{
+                            Map[Enimes[i]] = 0x17;
+                        }
+                        break;
+                    case 0x1A:
+                        if(Map[Enimes[i]+20] == 0x00){
+                            Map[Enimes[i]] = 0x00;
+                            Map[Enimes[i]+20] = 0x1A;
+                            Enimes[i] += 20;
+                        }
+                        else{
+                            Map[Enimes[i]] = 0x18;
+                        }
+                        break;
+                }
             }
         }
     }
-    Spikes[0]++;
-    if(Spikes[0] > 159 && HasSpikes == true){
-        if(SoundEffectsOn==true){PlaySound(SpikeSoundEffect);}
-        Spikes[0] = 0;
-        for(i = 21; i < 339; i++){if(Map[i] == 0x15){Map[i] = 0x16;}else if(Map[i] == 0x16){Map[i] = 0x15;}} 
+    if(HasSpikes == true){
+        if(Spikes[0] == 160){
+            if(SoundEffectsOn==true){PlaySound(SpikeSoundEffect);}
+            Spikes[0] = 0;
+            for(int i = 0; i < 360; i++){
+                switch(Map[i]){
+                    case 0x15:
+                        Map[i] = 0x16;
+                        break;
+                    case 0x16:
+                        Map[i] = 0x15;
+                        break;
+                }
+            }
+        }
+        Spikes[0]++;
     }
     if(Player[5] == 1){
         Player[4]++;
@@ -655,6 +681,7 @@ void Draw(){
             DrawTextureRec(TileSet, PlayerTilePos, (Vector2){Player[0] + GameScreenStart[0], Player[1]}, WHITE);
             if(Rock[0]==1){DrawTextureRec(TileSet,(Rectangle){160.0f,0.0f,40.0f,40.0f},(Vector2){Rock[1]+GameScreenStart[0],Rock[2]},WHITE);}
         EndMode2D();
+        if(FPSON == true){DrawFPS(10,10);}
     EndDrawing();
 }
 
@@ -820,11 +847,6 @@ void EndScreen(){
     PlayMusicStream(EndingMusic);
     if(HardMode == true){HardModeBeaten = true;}
     CurrentLevel = 0;
-    Deaths = 0;
-    Timer[0] = 0;
-    Timer[1] = 0;
-    Timer[2] = 0;
-    Timer[3] = 0;
     TotalFinnished++;
     while(!WindowShouldClose() && !IsKeyDown(KEY_ESCAPE) && !IsKeyDown(KEY_ENTER) && !IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
         if(WindowShouldClose()){ExitGame();}
@@ -832,7 +854,7 @@ void EndScreen(){
         if(MusicOn == true){UpdateMusicStream(EndingMusic);} ;
         BeginDrawing();
             ClearBackground(BLACK);
-            DrawTextureRec(TileSet, (Rectangle){0.0f,0.0f,800.0f,720.0f}, (Vector2){0,0}, WHITE);
+            DrawMainMenu();
             DrawText("You", 50 + GameScreenStart[0], 50 + GameScreenStart[1], 180, BLACK);
             DrawText("Excaped!", 50 + GameScreenStart[0], 200 + GameScreenStart[1], 150, BLACK);
             DrawText(FormatText("Time %02ih:%02im:%02is",Timer[3], Timer[2], Timer[1]), 50 + GameScreenStart[0], 390 + GameScreenStart[1], 50, WHITE);
@@ -840,6 +862,11 @@ void EndScreen(){
             if((BestTime[1]+(BestTime[2]*60)+(BestTime[3]*360)) > 0){DrawText(FormatText("Best Time %02ih:%02im:%02is",BestTime[3], BestTime[2], BestTime[1]), 50 + GameScreenStart[0], 490 + GameScreenStart[1], 50, WHITE);}
         EndDrawing();
     }
+    Deaths = 0;
+    Timer[0] = 0;
+    Timer[1] = 0;
+    Timer[2] = 0;
+    Timer[3] = 0;
     BeginGame();
 }
 

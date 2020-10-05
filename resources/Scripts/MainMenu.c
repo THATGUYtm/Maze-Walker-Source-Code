@@ -491,7 +491,7 @@ void OptionMenu(){
                 MenuControllerMode = false;
                 DrawRectangle(45 + GameScreenStart[0], 435, 510, 60, BLACK);
                 DrawRectangle(50 + GameScreenStart[0], 440, 500, 50, WHITE);
-            }else if(MenuControllerMode == true && CurserPos == 3){
+            }else if(MenuControllerMode == true && CurserPos == 2){
                 DrawRectangle(45 + GameScreenStart[0], 435, 510, 60, BLACK);
                 DrawRectangle(50 + GameScreenStart[0], 440, 500, 50, WHITE);
                 if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
@@ -503,7 +503,7 @@ void OptionMenu(){
                     }     
                 }
             }else{
-                if(CurserPos == 3){
+                if(CurserPos == 2){
                     CurserPos = ButtonNum;
                 }
                 DrawRectangle(50 + GameScreenStart[0], 440, 500, 50, WHITE);
@@ -741,13 +741,13 @@ void MainMenu(){
                 }
                 CurserPos = 2;
             }
-            DrawRectangle(295 + GameScreenStart[0], 500, 210, 45, BLACK);
+            DrawRectangle(295 + GameScreenStart[0], 510, 210, 45, BLACK);
             DrawRectangle(300 + GameScreenStart[0], 515, 200, 35, WHITE);
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                 ExitGame();
             }
         }else if(MenuControllerMode == true && CurserPos == 2){
-            DrawRectangle(295 + GameScreenStart[0], 500, 210, 45, BLACK);
+            DrawRectangle(295 + GameScreenStart[0], 510, 210, 45, BLACK);
             DrawRectangle(300 + GameScreenStart[0], 515, 200, 35, WHITE);
             if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                 ExitGame();
