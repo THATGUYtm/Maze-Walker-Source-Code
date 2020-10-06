@@ -2,6 +2,7 @@
 #include "resources/Scripts/Levels.c"
 #define DeadZone 0.3f
 #define FrameRate 60
+#define StartingLevel 1
 
 Music GameMusic;
 Music MenuMusic;

@@ -186,7 +186,7 @@ void ModeSelect(){
                     if(SoundEffectsOn == true){
                         PlaySound(MenuSelect);
                     }
-                    CurrentLevel = 1;
+                    CurrentLevel = StartingLevel;
                     Timer[0] = 0;
                     Timer[1] = 0;
                     Timer[2] = 0;
@@ -202,7 +202,7 @@ void ModeSelect(){
                     if(SoundEffectsOn == true){
                         PlaySound(MenuSelect);
                     }
-                    CurrentLevel = 1;
+                    CurrentLevel = StartingLevel;
                     Timer[0] = 0;
                     Timer[1] = 0;
                     Timer[2] = 0;
@@ -232,7 +232,7 @@ void ModeSelect(){
                     if(SoundEffectsOn == true){
                         PlaySound(MenuSelect);
                     }
-                    CurrentLevel = 1;
+                    CurrentLevel = StartingLevel;
                     Timer[0] = 0;
                     Timer[1] = 0;
                     Timer[2] = 0;
@@ -248,7 +248,7 @@ void ModeSelect(){
                     if(SoundEffectsOn == true){
                         PlaySound(MenuSelect);
                     }
-                    CurrentLevel = 1;
+                    CurrentLevel = StartingLevel;
                     Timer[0] = 0;
                     Timer[1] = 0;
                     Timer[2] = 0;
