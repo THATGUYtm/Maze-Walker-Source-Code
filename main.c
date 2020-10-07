@@ -205,13 +205,13 @@ void GameCompleted(){
     }
     if(Deaths < LeastDeathsInPlayThough && LeastDeathsInPlayThough != 0){
         LeastDeathsInPlayThough = Deaths;
-    }else{
-        LeastDeathsInPlayThough = Deaths;
+    }else if(LeastDeathsInPlayThough == 0 && TotalFinnished > 0){
+        LeastDeathsInPlayThough = 0;
     }
     if(Deaths > MostDeathsInPlayThough && MostDeathsInPlayThough != 0){
         MostDeathsInPlayThough = Deaths;
-    }else{
-        MostDeathsInPlayThough = Deaths;
+    }else if(MostDeathsInPlayThough == 0 && TotalFinnished > 0){
+        MostDeathsInPlayThough = 0;
     }
 }
 

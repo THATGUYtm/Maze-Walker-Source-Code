@@ -258,5 +258,6 @@ void UnloadTextures(){
     UnloadSound(LevelFinnishSoundEffect);
     UnloadSound(MenuChange);
     UnloadSound(MenuSelect);
+    UnloadRenderTexture(target);
     CloseWindow();
 }

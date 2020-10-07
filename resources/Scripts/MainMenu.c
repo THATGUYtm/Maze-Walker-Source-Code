@@ -58,7 +58,7 @@ void StatsMenu(){
             UpdateMusicStream(MenuMusic);
         }
         if(IsKeyPressed(KEY_ESCAPE) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)){
-            ButtonNum = 5;
+            ButtonNum = 6;
             break;
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
@@ -197,6 +197,7 @@ void ModeSelect(){
                             PlaySound(MenuSelect);
                         }
                         CurrentLevel = StartingLevel;
+                        Deaths = 0;
                         Timer[0] = 0;
                         Timer[1] = 0;
                         Timer[2] = 0;
@@ -213,6 +214,7 @@ void ModeSelect(){
                             PlaySound(MenuSelect);
                         }
                         CurrentLevel = StartingLevel;
+                        Deaths = 0;
                         Timer[0] = 0;
                         Timer[1] = 0;
                         Timer[2] = 0;
@@ -243,6 +245,7 @@ void ModeSelect(){
                             PlaySound(MenuSelect);
                         }
                         CurrentLevel = StartingLevel;
+                        Deaths = 0;
                         Timer[0] = 0;
                         Timer[1] = 0;
                         Timer[2] = 0;
@@ -259,6 +262,7 @@ void ModeSelect(){
                             PlaySound(MenuSelect);
                         }
                         CurrentLevel = StartingLevel;
+                        Deaths = 0;
                         Timer[0] = 0;
                         Timer[1] = 0;
                         Timer[2] = 0;
