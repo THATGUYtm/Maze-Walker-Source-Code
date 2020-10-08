@@ -296,7 +296,6 @@ void Game(){
         if(MusicOn == true){
             UpdateMusicStream(GameMusic);
         } 
-        SetWindowTitle(FormatText("M: %02i L: %02i", MostDeathsInPlayThough, LeastDeathsInPlayThough));
         Input();
         Update();
         PostionCheck();
