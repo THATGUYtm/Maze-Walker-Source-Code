@@ -112,7 +112,7 @@ void IntMusicAndSoundEffects(){
 }
 
 void IntWindow(){
-    SetConfigFlags(FLAG_VSYNC_HINT|FLAG_WINDOW_RESIZABLE);
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(800, 720, "Maze Walker");
     SetWindowMinSize(200, 180);
     Image Icon = LoadImage("resources/Graphics/Player/Tile06.png");
@@ -276,7 +276,6 @@ void BeginGame(){
 }
 
 void Game(){
-    TotalPlays++;
     if(!WindowShouldClose()){
         if(WindowShouldClose()){
             ExitGame();
@@ -297,6 +296,7 @@ void Game(){
         if(MusicOn == true){
             UpdateMusicStream(GameMusic);
         } 
+        SetWindowTitle(FormatText("M: %02i L: %02i", MostDeathsInPlayThough, LeastDeathsInPlayThough));
         Input();
         Update();
         PostionCheck();
@@ -1156,6 +1156,7 @@ void PauseMenu(){
 }
 
 void EndScreen(){
+    TotalFinnished++;
     GameCompleted();
     PauseMusicStream(GameMusic);
     PlayMusicStream(EndingMusic);
@@ -1163,7 +1164,6 @@ void EndScreen(){
         HardModeBeaten = true;
     }
     CurrentLevel = 0;
-    TotalFinnished++;
     while(!WindowShouldClose() && !IsKeyDown(KEY_ESCAPE) && !IsKeyDown(KEY_ENTER) && !IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
         if(WindowShouldClose()){
             ExitGame();
