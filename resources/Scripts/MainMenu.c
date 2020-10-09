@@ -913,5 +913,7 @@ void MainMenu(){
         DrawText("Options", 315, 475, 35, MenuTextColour);
         DrawText("ExitGame", 315, 515, 35, MenuTextColour);
     }
-    DrawText(VersionNum, 45, 655, 25, BLACK);
+    DrawText("v", 45, 655, 25, BLACK);
+    DrawText(VersionNum, 60, 655, 25, BLACK);
+    DrawText("Made by THATGUYtm", 600, 660, 15, BLACK);
 }

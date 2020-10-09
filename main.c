@@ -6,7 +6,7 @@
 #define FrameRate 60
 #define StartingLevel 1
 #define NumOfLevels 40
-#define VersionNum "v0.3.1"
+#define VersionNum "0.3.2"
 
 Music GameMusicOne;
 Music GameMusicTwo;
@@ -23,6 +23,7 @@ Sound EnimeSoundEffect;
 Sound LevelFinnishSoundEffect;
 Sound MenuChange;
 Sound MenuSelect;
+Sound WalkingSoundEffect;
 
 RenderTexture2D target;
 Rectangle PlayerTilePos = (Rectangle){1680.0f, 80.0f, 40.0f, 40.0f};
@@ -110,6 +111,7 @@ void IntMusicAndSoundEffects(){
     MenuMusic = LoadMusicStream("resources/Music/MenuMusic.mp3");
     EndingMusic = LoadMusicStream("resources/Music/EndingMusic.mp3");
 	PlayMusicStream(MenuMusic);
+    WalkingSoundEffect = LoadSound("resources/SoundEffects/WalkingSoundEffect.wav");
     KeySoundEffect = LoadSound("resources/SoundEffects/KeySoundEffect.wav");
     LockSoundEffect = LoadSound("resources/SoundEffects/LockSoundEffect.wav");
     BoxPushSoundEffect = LoadSound("resources/SoundEffects/BoxPushSoundEffect.wav");
@@ -123,12 +125,13 @@ void IntMusicAndSoundEffects(){
     SetSoundVolume(SpikeSoundEffect, 0.4f);
     SetSoundVolume(MenuSelect, 0.6f);
     SetSoundVolume(MenuChange, 0.3f);
+    SetSoundVolume(WalkingSoundEffect, 0.5f);
 }
 
 #include "resources/Scripts/Music.c"
 
 void IntWindow(){
-    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE | FLAG_MSAA_4X_HINT);
     InitWindow(800, 720, "Maze Walker");
     SetWindowMinSize(200, 180);
     Image Icon = LoadImage("resources/Graphics/Player/Tile06.png");
@@ -375,6 +378,9 @@ void PlayerUpdate(){
     if(MusicOn == true){
         PlayInGameMusic();
     } 
+    if(SoundEffectsOn == true && (TotalPlayTime[0]%8)==0){
+        PlaySound(WalkingSoundEffect);
+    }
     Update();
     Draw();
 }
@@ -774,7 +780,7 @@ void Update(){
     if(Player[5] == 1){
         Player[4]++;
         if(Player[2] == 0){
-           if(Player[4] == 30){
+            if(Player[4] == 30){
                Player[4] = 0;
                PlayerTilePos = (Rectangle){440.0f, 40.0f, 40.0f, 40.0f};
             }else if(Player[4] <= 15){
@@ -974,7 +980,7 @@ void PauseMenu(){
             ExitGame();
         }
         if(MusicOn == true){
-            PlayInGameMusic();
+            UpdateMusicStream(MenuMusic);
         } 
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
@@ -1146,7 +1152,7 @@ void PauseMenu(){
             ExitGame();
         }
         if(MusicOn == true){
-            PlayInGameMusic();
+            UpdateMusicStream(MenuMusic);
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
