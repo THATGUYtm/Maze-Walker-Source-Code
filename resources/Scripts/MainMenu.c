@@ -913,4 +913,5 @@ void MainMenu(){
         DrawText("Options", 315, 475, 35, MenuTextColour);
         DrawText("ExitGame", 315, 515, 35, MenuTextColour);
     }
+    DrawText(VersionNum, 45, 655, 25, BLACK);
 }

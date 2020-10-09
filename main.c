@@ -6,10 +6,15 @@
 #define FrameRate 60
 #define StartingLevel 1
 #define NumOfLevels 40
+#define VersionNum "v0.3.1"
 
-Music GameMusic;
-Music MenuMusic;
+Music GameMusicOne;
+Music GameMusicTwo;
+Music GameMusicThree;
+Music GameMusicFour;
+Music GameMusicFive;
 Music EndingMusic;
+Music MenuMusic;
 Sound KeySoundEffect;
 Sound LockSoundEffect;
 Sound BoxPushSoundEffect;
@@ -97,7 +102,11 @@ void ResumeFunct(){Resume = true;}
 void IntMusicAndSoundEffects(){
     InitAudioDevice(); 
 	SetMasterVolume(0.1f);
-	GameMusic = LoadMusicStream("resources/Music/LevelTheme.mp3");
+	GameMusicOne = LoadMusicStream("resources/Music/LevelThemeOne.mp3");
+    GameMusicTwo = LoadMusicStream("resources/Music/LevelThemeTwo.mp3");
+    GameMusicThree = LoadMusicStream("resources/Music/LevelThemeThree.mp3");
+    GameMusicFour = LoadMusicStream("resources/Music/LevelThemeFour.mp3");
+    GameMusicFive = LoadMusicStream("resources/Music/LevelThemeFive.mp3");
     MenuMusic = LoadMusicStream("resources/Music/MenuMusic.mp3");
     EndingMusic = LoadMusicStream("resources/Music/EndingMusic.mp3");
 	PlayMusicStream(MenuMusic);
@@ -109,7 +118,14 @@ void IntMusicAndSoundEffects(){
     LevelFinnishSoundEffect = LoadSound("resources/SoundEffects/LevelFinnishSoundEffect.wav"); 
     MenuSelect = LoadSound("resources/SoundEffects/MenuSelectSoundEffect.wav"); 
     MenuChange = LoadSound("resources/SoundEffects/MenuChangeSoundEffect.wav"); 
+    SetSoundVolume(BoxPushSoundEffect, 0.4f);
+    SetSoundVolume(KeySoundEffect, 0.4f);
+    SetSoundVolume(SpikeSoundEffect, 0.4f);
+    SetSoundVolume(MenuSelect, 0.6f);
+    SetSoundVolume(MenuChange, 0.3f);
 }
+
+#include "resources/Scripts/Music.c"
 
 void IntWindow(){
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
@@ -287,14 +303,13 @@ void Game(){
             UpdateMusicStream(MenuMusic);
         }
         SwitchLevel();
-        PlayMusicStream(GameMusic);
     }
     while(!WindowShouldClose()){
 		if(IsWindowHidden() || IsWindowMinimized()){
             PauseMenu();
         }
         if(MusicOn == true){
-            UpdateMusicStream(GameMusic);
+            PlayInGameMusic();
         } 
         Input();
         Update();
@@ -358,7 +373,7 @@ void PlayerUpdate(){
         PauseMenu();
     }
     if(MusicOn == true){
-        UpdateMusicStream(GameMusic);
+        PlayInGameMusic();
     } 
     Update();
     Draw();
@@ -893,7 +908,7 @@ void EndTransistionScreen(){
             ExitGame();
         }
         if(MusicOn == true){
-            UpdateMusicStream(GameMusic);
+            PlayInGameMusic();
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
@@ -918,7 +933,7 @@ void TransistionScreen(){
             ExitGame();
         }
         if(MusicOn == true){
-            UpdateMusicStream(GameMusic);
+            PlayInGameMusic();
         } 
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
@@ -937,7 +952,7 @@ void TransistionScreen(){
             ExitGame();
         }
         if(MusicOn == true){
-            UpdateMusicStream(GameMusic);
+            PlayInGameMusic();
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
@@ -959,7 +974,7 @@ void PauseMenu(){
             ExitGame();
         }
         if(MusicOn == true){
-            UpdateMusicStream(GameMusic);
+            PlayInGameMusic();
         } 
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
@@ -1131,7 +1146,7 @@ void PauseMenu(){
             ExitGame();
         }
         if(MusicOn == true){
-            UpdateMusicStream(GameMusic);
+            PlayInGameMusic();
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
@@ -1157,7 +1172,6 @@ void PauseMenu(){
 void EndScreen(){
     TotalFinnished++;
     GameCompleted();
-    PauseMusicStream(GameMusic);
     PlayMusicStream(EndingMusic);
     if(HardMode == true){
         HardModeBeaten = true;

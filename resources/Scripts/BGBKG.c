@@ -248,7 +248,11 @@ void DrawBKG(){
 void UnloadTextures(){
     UnloadTexture(TileSet);
     UnloadMusicStream(MenuMusic);
-    UnloadMusicStream(GameMusic);
+    UnloadMusicStream(GameMusicOne);
+    UnloadMusicStream(GameMusicTwo);
+    UnloadMusicStream(GameMusicThree);
+    UnloadMusicStream(GameMusicFour);
+    UnloadMusicStream(GameMusicFive);
     UnloadMusicStream(EndingMusic);
     UnloadSound(KeySoundEffect);
     UnloadSound(LockSoundEffect);
