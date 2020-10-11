@@ -780,40 +780,56 @@ void Update(){
     if(Player[5] == 1){
         Player[4]++;
         if(Player[2] == 0){
-            if(Player[4] == 30){
+            if(Player[4] >= 34){
                Player[4] = 0;
-               PlayerTilePos = (Rectangle){440.0f, 40.0f, 40.0f, 40.0f};
-            }else if(Player[4] <= 15){
                PlayerTilePos = (Rectangle){0.0f, 80.0f, 40.0f, 40.0f};
-            }else{
+            }else if(Player[4] >= 30){
+               PlayerTilePos = (Rectangle){400.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 17){
                PlayerTilePos = (Rectangle){440.0f, 40.0f, 40.0f, 40.0f};
-            } 
-        }else if(Player[2] == 1){
-            if(Player[4] == 30){
-                Player[4] = 0;
-                PlayerTilePos = (Rectangle){200.0f, 40.0f, 40.0f, 40.0f};
-            }else if(Player[4] <= 15){
-                PlayerTilePos = (Rectangle){240.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 13){
+               PlayerTilePos = (Rectangle){400.0f, 40.0f, 40.0f, 40.0f};
             }else{
-                PlayerTilePos = (Rectangle){200.0f, 40.0f, 40.0f, 40.0f};
+                PlayerTilePos = (Rectangle){0.0f, 80.0f, 40.0f, 40.0f};
+            }
+        }else if(Player[2] == 1){
+            if(Player[4] >= 34){
+               Player[4] = 0;
+               PlayerTilePos = (Rectangle){240.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 30){
+               PlayerTilePos = (Rectangle){160.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 17){
+               PlayerTilePos = (Rectangle){200.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 13){
+               PlayerTilePos = (Rectangle){160.0f, 40.0f, 40.0f, 40.0f};
+            }else{
+                PlayerTilePos = (Rectangle){240.0f, 40.0f, 40.0f, 40.0f};
             }
         }else if(Player[2] == 2){
-            if(Player[4] == 30){
-                Player[4] = 0;
-                PlayerTilePos = (Rectangle){80.0f, 40.0f, 40.0f, 40.0f};
-            }else if(Player[4] <= 15){
-                PlayerTilePos = (Rectangle){120.0f, 40.0f, 40.0f, 40.0f};
+            if(Player[4] >= 34){
+               Player[4] = 0;
+               PlayerTilePos = (Rectangle){120.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 30){
+               PlayerTilePos = (Rectangle){40.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 17){
+               PlayerTilePos = (Rectangle){80.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 13){
+               PlayerTilePos = (Rectangle){40.0f, 40.0f, 40.0f, 40.0f};
             }else{
-                PlayerTilePos = (Rectangle){80.0f, 40.0f, 40.0f, 40.0f};
+                PlayerTilePos = (Rectangle){120.0f, 40.0f, 40.0f, 40.0f};
             }
         }else if(Player[2] == 3){
-            if(Player[4] == 30){
-                Player[4] = 0;
-                PlayerTilePos = (Rectangle){320.0f, 40.0f, 40.0f, 40.0f};
-            }else if(Player[4] <= 15){
-                PlayerTilePos = (Rectangle){360.0f, 40.0f, 40.0f, 40.0f};
+            if(Player[4] >= 34){
+               Player[4] = 0;
+               PlayerTilePos = (Rectangle){360.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 30){
+               PlayerTilePos = (Rectangle){280.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 17){
+               PlayerTilePos = (Rectangle){320.0f, 40.0f, 40.0f, 40.0f};
+            }else if(Player[4] >= 13){
+               PlayerTilePos = (Rectangle){280.0f, 40.0f, 40.0f, 40.0f};
             }else{
-                PlayerTilePos = (Rectangle){320.0f, 40.0f, 40.0f, 40.0f};
+                PlayerTilePos = (Rectangle){360.0f, 40.0f, 40.0f, 40.0f};
             }
         }
     }else{
