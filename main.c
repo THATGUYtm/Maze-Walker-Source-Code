@@ -6,7 +6,7 @@
 #define FrameRate 60
 #define StartingLevel 1
 #define NumOfLevels 40
-#define VersionNum "0.3.2"
+#define VersionNum "0.3.2.1"
 
 Music GameMusicOne;
 Music GameMusicTwo;
@@ -272,7 +272,7 @@ void MainMenuSection(){
 void BeginGame(){
     SaveSave();
     float fade = 1.0f;
-    for(i = 0; i < 20; i++){
+    for(i = 0; i < 10; i++){
         if(WindowShouldClose()){
             ExitGame();
         }
@@ -288,7 +288,7 @@ void BeginGame(){
             EndTextureMode();
             DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
         EndDrawing();
-        fade -= 0.05f;
+        fade -= 0.1f;
     }
     MainMenuSection();
     Game();
@@ -1192,6 +1192,32 @@ void PauseMenu(){
 }
 
 void EndScreen(){
+    float fade = 1.0f;
+    for(i = 0; i < 20; i++){
+        if(WindowShouldClose()){
+            ExitGame();
+        }
+        if(MusicOn == true){
+            UpdateMusicStream(MenuMusic);
+        }
+        scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
+        BeginDrawing();
+            ClearBackground(BLACK);
+            BeginTextureMode(target);
+                DrawMainMenu();
+                DrawText("You", 50, 50, 180, BLACK);
+                DrawText("Excaped!", 50, 200, 150, BLACK);
+                DrawText(FormatText("Time %02ih:%02im:%02is",Timer[3], Timer[2], Timer[1]), 50, 390, 50, WHITE);
+                DrawText(FormatText("Deaths %02i", Deaths), 50, 440, 50, WHITE);
+                if((BestTime[1]+(BestTime[2]*60)+(BestTime[3]*360)) > 0){
+                    DrawText(FormatText("Best Time %02ih:%02im:%02is",BestTime[3], BestTime[2], BestTime[1]), 50, 490, 50, WHITE);
+                }
+                DrawRectangle(0,0,800,760,Fade(BLACK, fade));
+            EndTextureMode();
+            DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+        EndDrawing();
+        fade -= 0.05f;
+    }
     TotalFinnished++;
     GameCompleted();
     PlayMusicStream(EndingMusic);
@@ -1227,6 +1253,23 @@ void EndScreen(){
     Timer[1] = 0;
     Timer[2] = 0;
     Timer[3] = 0;
+    fade = 0.0f;
+    for(i = 0; i < 20; i++){
+        if(WindowShouldClose()){
+            ExitGame();
+        }
+        if(MusicOn == true){
+            UpdateMusicStream(MenuMusic);
+        }
+        scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
+        BeginDrawing();
+            BeginTextureMode(target);
+                DrawRectangle(0,0,800,760,Fade(BLACK, fade));
+            EndTextureMode();
+            DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+        EndDrawing();
+        fade += 0.05f;
+    }
     BeginGame();
 }
 

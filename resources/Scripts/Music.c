@@ -31,35 +31,35 @@ void PlayInGameMusic(){
     }else{
         switch(CurrentTrack){
             case 1:
-                if(GetMusicTimePlayed(GameMusicOne) >= GetMusicTimeLength(GameMusicOne)-0.1f){
+                if(GetMusicTimePlayed(GameMusicOne) >= GetMusicTimeLength(GameMusicOne)-0.01f){
                     PlayMusic();
                 }else{
                     UpdateMusicStream(GameMusicOne);
                 }
                 break;
             case 2:
-                if(GetMusicTimePlayed(GameMusicTwo) >= GetMusicTimeLength(GameMusicTwo)-0.1f){
+                if(GetMusicTimePlayed(GameMusicTwo) >= GetMusicTimeLength(GameMusicTwo)-0.01f){
                     PlayMusic();
                 }else{
                     UpdateMusicStream(GameMusicTwo);
                 }
                 break;
             case 3:
-                if(GetMusicTimePlayed(GameMusicThree) >= GetMusicTimeLength(GameMusicThree)-0.1f){
+                if(GetMusicTimePlayed(GameMusicThree) >= GetMusicTimeLength(GameMusicThree)-0.01f){
                     PlayMusic();
                 }else{
                     UpdateMusicStream(GameMusicThree);
                 }
                 break;
             case 4:
-                if(GetMusicTimePlayed(GameMusicFour) >= GetMusicTimeLength(GameMusicFour)-0.1f){
+                if(GetMusicTimePlayed(GameMusicFour) >= GetMusicTimeLength(GameMusicFour)-0.01f){
                     PlayMusic();
                 }else{
                     UpdateMusicStream(GameMusicFour);
                 }
                 break;
             case 5:
-                if(GetMusicTimePlayed(GameMusicFive) >= GetMusicTimeLength(GameMusicFive)-0.1f){
+                if(GetMusicTimePlayed(GameMusicFive) >= GetMusicTimeLength(GameMusicFive)-0.01f){
                     PlayMusic();
                 }else{
                     UpdateMusicStream(GameMusicFive);
