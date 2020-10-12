@@ -4,7 +4,7 @@
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))
 #define FrameRate 60
-#define StartingLevel 1
+#define StartingLevel 33
 #define NumOfLevels 40
 #define VersionNum "0.3.2.1"
 
@@ -78,6 +78,8 @@ bool MenuControllerMode = false;
 bool HardMode = false;
 bool HardModeBeaten;
 bool FPSON = false;
+bool BoardersOn = true;
+bool DisplayLogo = false;
 
 #include "resources/Scripts/BGBKG.c"
 
@@ -99,6 +101,80 @@ void Game();
 void ResumeFunct(){Resume = true;}
 
 #include "resources/Scripts/MainMenu.c"
+
+void RayLibLogo(){
+    const int screenWidth = 800,screenHeight = 720;
+    int logoPositionX=screenWidth/2-128,logoPositionY=screenHeight/2-128,framesCounter=0,lettersCount=0,topSideRecWidth=16,leftSideRecHeight=16,bottomSideRecWidth=16,rightSideRecHeight=16,state=0;
+    float alpha = 1.0f;
+    while(!WindowShouldClose()){
+        if(GetKeyPressed() > 0){break;}
+        if(state == 0){
+            framesCounter++;
+            if(framesCounter == 120){
+                state = 1;
+                framesCounter = 0;
+            }
+        }else if(state == 1){
+            topSideRecWidth += 4;
+            leftSideRecHeight += 4;
+            if(topSideRecWidth == 256) state = 2;
+        }else if(state == 2){
+            bottomSideRecWidth += 4;
+            rightSideRecHeight += 4;
+            if(bottomSideRecWidth == 256) state = 3;
+        }else if(state == 3){
+            framesCounter++;
+            if(framesCounter/12){
+                lettersCount++;
+                framesCounter = 0;
+            }
+            if(lettersCount >= 10){
+                alpha -= 0.02f;
+                if(alpha <= 0.0f){
+                    alpha = 0.0f;
+                    state = 4;
+                }
+            }
+        }else if(state == 4){
+            if (IsKeyPressed('R')){
+                framesCounter = 0;
+                lettersCount = 0;
+                topSideRecWidth = 16;
+                leftSideRecHeight = 16;
+                bottomSideRecWidth = 16;
+                rightSideRecHeight = 16;
+                alpha = 1.0f;
+                state = 0;
+            }
+        }
+        scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
+        BeginDrawing();
+            ClearBackground(RAYWHITE);
+            BeginTextureMode(target);
+                ClearBackground(RAYWHITE);
+                if (state == 0){
+                    if ((framesCounter/15)%2) DrawRectangle(logoPositionX, logoPositionY, 16, 16, BLACK);
+                }else if (state == 1){
+                    DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, BLACK);
+                    DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, BLACK);
+                }else if (state == 2){
+                    DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, BLACK);
+                    DrawRectangle(logoPositionX, logoPositionY, 16, leftSideRecHeight, BLACK);
+                    DrawRectangle(logoPositionX + 240, logoPositionY, 16, rightSideRecHeight, BLACK);
+                    DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, BLACK);
+                }else if (state == 3){
+                    DrawRectangle(logoPositionX, logoPositionY, topSideRecWidth, 16, Fade(BLACK, alpha));
+                    DrawRectangle(logoPositionX, logoPositionY + 16, 16, leftSideRecHeight - 32, Fade(BLACK, alpha));
+                    DrawRectangle(logoPositionX + 240, logoPositionY + 16, 16, rightSideRecHeight - 32, Fade(BLACK, alpha));
+                    DrawRectangle(logoPositionX, logoPositionY + 240, bottomSideRecWidth, 16, Fade(BLACK, alpha));
+                    DrawRectangle(screenWidth/2 - 112, screenHeight/2 - 112, 224, 224, Fade(RAYWHITE, alpha));
+                    DrawText(TextSubtext("raylib", 0, lettersCount), screenWidth/2 - 44, screenHeight/2 + 48, 50, Fade(BLACK, alpha));
+                }else if (state == 4){break;}
+            EndTextureMode();
+            DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+        EndDrawing();
+    }
+}
 
 void IntMusicAndSoundEffects(){
     InitAudioDevice(); 
@@ -244,6 +320,9 @@ int main(void){
     intTextures();
     IntMusicAndSoundEffects();
     LoadSave();
+    if(DisplayLogo == true){
+        RayLibLogo();
+    }
     BeginGame();
     return 0;
 }
@@ -260,7 +339,7 @@ void MainMenuSection(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBKG();
             BeginTextureMode(target);
                 MainMenu();
             EndTextureMode();
@@ -281,12 +360,12 @@ void BeginGame(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBKG();
             BeginTextureMode(target);
                 MainMenu();
-                DrawRectangle(0,0,800,760,Fade(BLACK, fade));
             EndTextureMode();
             DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
         EndDrawing();
         fade -= 0.1f;
     }
@@ -884,7 +963,7 @@ void Draw(){
     virtualMouse.y = (mouse.y - (GetScreenHeight() - (gameScreenHeight*scale))*0.5f)/scale;
     virtualMouse = ClampValue(virtualMouse, (Vector2){ 0, 0 }, (Vector2){ gameScreenWidth, gameScreenHeight });
     BeginDrawing();
-        ClearBackground(BLACK);
+        ClearBKG();
         BeginTextureMode(target);
             DrawBKG();
             DrawTextureRec(TileSet, PlayerTilePos, (Vector2){Player[0], Player[1]}, WHITE);
@@ -934,10 +1013,14 @@ void EndTransistionScreen(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBKG();
             BeginTextureMode(target);
                 DrawBKG();
                 DrawTextureRec(TileSet, (Rectangle){280.0f, 40.0f, 40.0f, 40.0f}, (Vector2){Player[0], Player[1]}, WHITE);
+            EndTextureMode();
+            DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
+            BeginTextureMode(target);
                 DrawRectangle(0,0,800,720,Fade(BLACK, fade));
                 DrawTextureRec(TileSet, (Rectangle){280.0f, 40.0f, 40.0f, 40.0f}, (Vector2){340, 340}, WHITE);
                 DrawText(FormatText("%02i", CurrentLevel), 400, 340, 50, Fade(WHITE, fade));
@@ -959,7 +1042,7 @@ void TransistionScreen(){
         } 
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-            ClearBackground(BLACK);
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade)); 
             BeginTextureMode(target);
                 DrawRectangle(0,0,800,720,Fade(BLACK, fade)); 
                 DrawTextureRec(TileSet, (Rectangle){280.0f, 40.0f, 40.0f, 40.0f}, (Vector2){340, 340}, WHITE);
@@ -1000,6 +1083,7 @@ void PauseMenu(){
         } 
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
             BeginTextureMode(target);
                 DrawRectangle(0,0,800,720,Fade(BLACK, fade));
                 DrawText("PAUSE", 150, 100, 150, Fade(WHITE, fade));
@@ -1172,12 +1256,16 @@ void PauseMenu(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBKG();
             BeginTextureMode(target);
                 DrawBKG();
                 DrawTextureRec(TileSet, (Rectangle){280.0f, 40.0f, 40.0f, 40.0f}, (Vector2){Player[0], Player[1]}, WHITE);
-                DrawText("PAUSE", 150, 100, 150, Fade(WHITE, fade));
+            EndTextureMode();
+            DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
+            BeginTextureMode(target);
                 DrawRectangle(0,0,800,720,Fade(BLACK, fade));
+                DrawText("PAUSE", 150, 100, 150, Fade(WHITE, fade));
                 DrawRectangle(230, 380, 300, 50, Fade(WHITE, fade));
                 DrawText("Resume", 235, 385, 45, Fade(BLACK, fade));
                 DrawRectangle(230, 440, 300, 50, Fade(WHITE, fade));
@@ -1202,7 +1290,7 @@ void EndScreen(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBKG();
             BeginTextureMode(target);
                 DrawMainMenu();
                 DrawText("You", 50, 50, 180, BLACK);
@@ -1212,9 +1300,9 @@ void EndScreen(){
                 if((BestTime[1]+(BestTime[2]*60)+(BestTime[3]*360)) > 0){
                     DrawText(FormatText("Best Time %02ih:%02im:%02is",BestTime[3], BestTime[2], BestTime[1]), 50, 490, 50, WHITE);
                 }
-                DrawRectangle(0,0,800,760,Fade(BLACK, fade));
             EndTextureMode();
             DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
         EndDrawing();
         fade -= 0.05f;
     }
@@ -1234,7 +1322,7 @@ void EndScreen(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBKG();
             BeginTextureMode(target);
                 DrawMainMenu();
                 DrawText("You", 50, 50, 180, BLACK);
@@ -1263,6 +1351,7 @@ void EndScreen(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
             BeginTextureMode(target);
                 DrawRectangle(0,0,800,760,Fade(BLACK, fade));
             EndTextureMode();

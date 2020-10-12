@@ -12,14 +12,14 @@ void FadeOut(){
         if(MusicOn == true){
             UpdateMusicStream(MenuMusic);
         }
-        scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
+            ClearBKG();
             BeginTextureMode(target);
-                DrawRectangle(0,0,800,760,Fade(BLACK, fade));
             EndTextureMode();
             DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
         EndDrawing();
-        fade += 0.1f;
+        fade += 0.11f;
     }
 }
 
@@ -49,7 +49,7 @@ void ModeSelectFade(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBKG();
             BeginTextureMode(target);
                 DrawMainMenu();
                 DrawText("Maze", 160, 50, 180, MenuTextColour);
@@ -61,9 +61,9 @@ void ModeSelectFade(){
                 DrawText("Hard", 315, 480, 35, MenuTextColour);
                 DrawRectangle(300, 525, 200, 35, WHITE);
                 DrawText("Back", 315, 525, 35, MenuTextColour);
-                DrawRectangle(0,0,800,760,Fade(BLACK, fade));
             EndTextureMode();
             DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
         EndDrawing();
         fade -= 0.1f;
     }
@@ -80,10 +80,10 @@ void FadeOptionsMenu(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBKG();
             BeginTextureMode(target);
                 DrawMainMenu();
-                DrawText("Options", 50, 50, 180, MenuTextColour);
+                DrawText("Options", 50, 45, 180, MenuTextColour);
                 DrawRectangle(550, 635, 200, 35, WHITE);
                 DrawRectangle(300, 635, 200, 35, WHITE);
                 DrawRectangle(50, 300, 250, 50, WHITE);
@@ -114,9 +114,15 @@ void FadeOptionsMenu(){
                 }
                 DrawText("Back", 565, 635, 35, MenuTextColour);
                 DrawText("Stats", 305, 635, 35, MenuTextColour);
-                DrawRectangle(0,0,800,760,Fade(BLACK, fade));
+                DrawRectangle(50, 235, 400, 50, WHITE);
+                if(BoardersOn == true){
+                    DrawText("Boarders: On", 55, 240, 50, MenuTextColour);
+                }else{
+                    DrawText("Boarders: Off", 55, 240, 50, MenuTextColour);
+                }
             EndTextureMode();
             DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
         EndDrawing();
         fade -= 0.1f;
     }
@@ -133,7 +139,7 @@ void FadeStatsMenu(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBKG();
             BeginTextureMode(target);
                 DrawMainMenu();
                 DrawText("StatsMenu", 50, 50, 100, MenuTextColour);
@@ -154,9 +160,9 @@ void FadeStatsMenu(){
                 DrawText(FormatText("Best Time: %02i:%02i.%02i", BestTime[3], BestTime[2], BestTime[1]), 50, 550, 40, MenuTextColour);
                 DrawText("Back", 565, 635, 35, MenuTextColour);
                 DrawText("Clear Save", 305, 635, 35, MenuTextColour);
-                DrawRectangle(0,0,800,760,Fade(BLACK, fade));
             EndTextureMode();
             DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
         EndDrawing();
         fade -= 0.1f;
     }
@@ -219,7 +225,7 @@ void StatsMenu(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-        ClearBackground(BLACK);
+        ClearBKG();
             BeginTextureMode(target);
                 DrawMainMenu();
                 DrawText("StatsMenu", 50, 50, 100, MenuTextColour);
@@ -367,7 +373,7 @@ void ModeSelect(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-        ClearBackground(BLACK);
+        ClearBKG();
             BeginTextureMode(target);
                 DrawMainMenu();
                 DrawText("Maze", 160, 50, 180, MenuTextColour);
@@ -560,10 +566,77 @@ void OptionMenu(){
         }
         scale = min((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
         BeginDrawing();
-        ClearBackground(BLACK);
+        ClearBKG();
             BeginTextureMode(target);
                 DrawMainMenu();
-                DrawText("Options", 50, 50, 180, MenuTextColour);
+                DrawText("Options", 50, 45, 180, MenuTextColour);
+                if(((int)virtualMouse.x > 300) && ((int)virtualMouse.x < 500) && ((int)virtualMouse.y > 635) && ((int)virtualMouse.y < 670)){
+                    if(CurserPos != 4){
+                        if(SoundEffectsOn == true){
+                            PlaySound(MenuChange);
+                        }
+                        CurserPos = 4;
+                    }
+                    MenuControllerMode = false;
+                    DrawRectangle(295, 630, 210, 45, BLACK);
+                    DrawRectangle(300, 635, 200, 35, WHITE);
+                    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                        if(SoundEffectsOn == true){
+                            PlaySound(MenuSelect);
+                        }
+                        StatsMenuFlag = true;
+                    }
+                }else if(MenuControllerMode == true && CurserPos == 4){
+                    DrawRectangle(295, 630, 210, 45, BLACK);
+                    DrawRectangle(300, 635, 200, 35, WHITE);
+                    if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
+                        if(SoundEffectsOn == true){
+                            PlaySound(MenuSelect);
+                        }
+                        StatsMenuFlag = true;
+                    }
+                }else{
+                    if(CurserPos == 4){
+                        CurserPos = ButtonNum;
+                    }
+                    DrawRectangle(300, 635, 200, 35, WHITE);
+                } 
+                if(((int)virtualMouse.x>50)&&((int)virtualMouse.x<450)&&((int)virtualMouse.y>235)&&((int)virtualMouse.y<285)){
+                    if(CurserPos != 0){
+                        if(SoundEffectsOn == true){
+                            PlaySound(MenuChange);
+                        }
+                        CurserPos = 0;
+                    }
+                    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                        if(SoundEffectsOn == true){
+                            PlaySound(MenuSelect);
+                        }
+                        BoardersOn=!BoardersOn;
+                    }
+                    MenuControllerMode = false;
+                    DrawRectangle(45, 234, 410, 60, BLACK);
+                    DrawRectangle(50, 240, 400, 50, WHITE);
+                }else if(MenuControllerMode == true && CurserPos == 0){
+                    DrawRectangle(45, 235, 410, 60, BLACK);
+                    DrawRectangle(50, 240, 400, 50, WHITE);
+                    if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
+                        if(SoundEffectsOn == true){
+                            PlaySound(MenuSelect);
+                        }
+                        BoardersOn=!BoardersOn;
+                    }
+                }else{
+                    if(CurserPos == 0){
+                        CurserPos = ButtonNum;
+                    }
+                    DrawRectangle(50, 235, 400, 50, WHITE);
+                }
+                if(BoardersOn == true){
+                    DrawText("Boarders: On", 55, 240, 50, MenuTextColour);
+                }else{
+                    DrawText("Boarders: Off", 55, 240, 50, MenuTextColour);
+                }
                 if(((int)virtualMouse.x > 550) && ((int)virtualMouse.x < 750) && ((int)virtualMouse.y > 635) && ((int)virtualMouse.y < 670)){
                     if(CurserPos != 5){
                         if(SoundEffectsOn == true){
@@ -805,6 +878,7 @@ void OptionMenu(){
 void MainMenu(){
     bool ModeSelectFlag = false;
     bool OptionsMenuFlag = false;
+    bool ExitFlag = false;
     ButtonNum = 4;
     Vector2 mouse = GetMousePosition();
     Vector2 virtualMouse = { 0 };
@@ -971,7 +1045,7 @@ void MainMenu(){
                 if(SoundEffectsOn == true){
                     PlaySound(MenuSelect);
                 }
-                ExitGame();
+                ExitFlag = true;
             }
         }else if(MenuControllerMode == true && CurserPos == 3){
             DrawRectangle(295, 550, 210, 45, BLACK);
@@ -980,7 +1054,7 @@ void MainMenu(){
                 if(SoundEffectsOn == true){
                     PlaySound(MenuSelect);
                 }
-                ExitGame();
+                ExitFlag = true;
             }
         }else{
             if(CurserPos == 3){
@@ -1029,13 +1103,13 @@ void MainMenu(){
             DrawRectangle(295, 510, 210, 45, BLACK);
             DrawRectangle(300, 515, 200, 35, WHITE);
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-                ExitGame();
+                ExitFlag = true;
             }
         }else if(MenuControllerMode == true && CurserPos == 2){
             DrawRectangle(295, 510, 210, 45, BLACK);
             DrawRectangle(300, 515, 200, 35, WHITE);
             if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                ExitGame();
+                ExitFlag = true;
             }
         }else{
             if(CurserPos == 2){
@@ -1062,5 +1136,9 @@ void MainMenu(){
         ModeSelect();
         FadeOut();
         BeginGame();
+    }
+    if(ExitFlag == true){
+        ExitFlag = false;
+        ExitGame();
     }
 }

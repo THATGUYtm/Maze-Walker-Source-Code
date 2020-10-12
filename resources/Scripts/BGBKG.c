@@ -4,6 +4,24 @@ Color MenuTextColour = BLACK;
 
 Texture2D TileSet;
 
+void ClearBKG(){
+    if(BoardersOn == true){
+    switch(TileSetChoice){
+        case 0:
+            ClearBackground((Color){183, 142, 135, 255});
+               break;
+        case 1:
+            ClearBackground((Color){16, 16, 16, 255});
+            break;
+        case 2:
+            ClearBackground(BLACK);
+            break;
+    }
+    }else{
+        ClearBackground(BLACK);
+    }
+}
+
 void intTextures(){
     switch(TileSetChoice){
         case 0:
@@ -246,6 +264,20 @@ void DrawBKG(){
 }
 
 void UnloadTextures(){
+    float fade = 0.0f;
+    for(i = 0; i < 10; i++){
+        if(MusicOn == true){
+            UpdateMusicStream(MenuMusic);
+        }
+        BeginDrawing();
+            ClearBKG();
+            BeginTextureMode(target);
+            EndTextureMode();
+            DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+            DrawRectangle(0,0,GetScreenWidth(),GetScreenHeight(),Fade(BLACK, fade));
+        EndDrawing();
+        fade += 0.11f;
+    }
     UnloadTexture(TileSet);
     UnloadMusicStream(MenuMusic);
     UnloadMusicStream(GameMusicOne);
