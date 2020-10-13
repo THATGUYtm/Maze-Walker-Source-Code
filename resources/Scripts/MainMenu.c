@@ -851,6 +851,7 @@ void OptionMenu(){
         }
         if(MainMenuFlag == true){
             MainMenuFlag = false;
+			SaveSave();
             break;
         }
     }

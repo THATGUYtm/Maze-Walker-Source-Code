@@ -244,6 +244,12 @@ void LoadSave(){
     MostDeathsInPlayThough = LoadStorageValue(21);
     HardModeBeaten = LoadStorageValue(22);
     TotalFinnished = LoadStorageValue(23);
+	FPSON = LoadStorageValue(24);
+	BoardersOn = LoadStorageValue(25);
+	MusicOn = LoadStorageValue(26);
+	TileSetChoice = LoadStorageValue(27);
+	intTextures();
+	SoundEffectsOn = LoadStorageValue(28);
 }
 
 void SaveSave(){
@@ -271,6 +277,11 @@ void SaveSave(){
     SaveStorageValue(21, MostDeathsInPlayThough);
     SaveStorageValue(22, HardModeBeaten);
     SaveStorageValue(23, TotalFinnished);
+	SaveStorageValue(24, FPSON);
+	SaveStorageValue(25, BoardersOn);
+	SaveStorageValue(26, MusicOn);
+	SaveStorageValue(27, TileSetChoice);
+	SaveStorageValue(28, SoundEffectsOn);
 }
 
 void GameCompleted(){
