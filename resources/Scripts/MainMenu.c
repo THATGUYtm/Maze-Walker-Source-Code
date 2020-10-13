@@ -38,6 +38,7 @@ void ClearSaveFile(){
     TotalFinnished = 0;
     SaveSave();
 }
+
 void ModeSelectFade(){
     float fade = 1.0f;
     for(i = 0; i < 10; i++){
@@ -100,6 +101,8 @@ void FadeOptionsMenu(){
                     DrawText("TileSet: Gameboy", 55, 440, 50, MenuTextColour);
                 }else if(TileSetChoice == 2){
                     DrawText("TileSet: Modern", 55, 440, 50, MenuTextColour);
+                }else if(TileSetChoice == 3){
+                    DrawText("TileSet: P5", 55, 440, 50, MenuTextColour);
                 }
                 if(SoundEffectsOn == true){
                     DrawText("Sound Effects: On", 55, 370, 50, MenuTextColour);
@@ -515,7 +518,7 @@ void ModeSelect(){
 void OptionMenu(){
     bool MainMenuFlag = false;
     bool StatsMenuFlag = false;
-    ButtonNum = 6;
+    ButtonNum = 7;
     FadeOut();
     FadeOptionsMenu();
     while(1){
@@ -570,12 +573,13 @@ void OptionMenu(){
             BeginTextureMode(target);
                 DrawMainMenu();
                 DrawText("Options", 50, 45, 180, MenuTextColour);
+				//Stats menu
                 if(((int)virtualMouse.x > 300) && ((int)virtualMouse.x < 500) && ((int)virtualMouse.y > 635) && ((int)virtualMouse.y < 670)){
-                    if(CurserPos != 4){
+                    if(CurserPos != 5){
                         if(SoundEffectsOn == true){
                             PlaySound(MenuChange);
                         }
-                        CurserPos = 4;
+                        CurserPos = 5;
                     }
                     MenuControllerMode = false;
                     DrawRectangle(295, 630, 210, 45, BLACK);
@@ -586,7 +590,7 @@ void OptionMenu(){
                         }
                         StatsMenuFlag = true;
                     }
-                }else if(MenuControllerMode == true && CurserPos == 4){
+                }else if(MenuControllerMode == true && CurserPos == 5){
                     DrawRectangle(295, 630, 210, 45, BLACK);
                     DrawRectangle(300, 635, 200, 35, WHITE);
                     if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
@@ -596,11 +600,12 @@ void OptionMenu(){
                         StatsMenuFlag = true;
                     }
                 }else{
-                    if(CurserPos == 4){
+                    if(CurserPos == 5){
                         CurserPos = ButtonNum;
                     }
                     DrawRectangle(300, 635, 200, 35, WHITE);
                 } 
+				//Boarders
                 if(((int)virtualMouse.x>50)&&((int)virtualMouse.x<450)&&((int)virtualMouse.y>235)&&((int)virtualMouse.y<285)){
                     if(CurserPos != 0){
                         if(SoundEffectsOn == true){
@@ -637,12 +642,13 @@ void OptionMenu(){
                 }else{
                     DrawText("Boarders: Off", 55, 240, 50, MenuTextColour);
                 }
+				//Back
                 if(((int)virtualMouse.x > 550) && ((int)virtualMouse.x < 750) && ((int)virtualMouse.y > 635) && ((int)virtualMouse.y < 670)){
-                    if(CurserPos != 5){
+                    if(CurserPos != 6){
                         if(SoundEffectsOn == true){
                             PlaySound(MenuChange);
                         }
-                        CurserPos = 5;
+                        CurserPos = 6;
                     }
                     MenuControllerMode = false;
                     DrawRectangle(545, 630, 210, 45, BLACK);
@@ -653,7 +659,7 @@ void OptionMenu(){
                         }
                         MainMenuFlag = true;
                     }
-                }else if(MenuControllerMode == true && CurserPos == 5){
+                }else if(MenuControllerMode == true && CurserPos == 6){
                     DrawRectangle(545, 630, 210, 45, BLACK);
                     DrawRectangle(550, 635, 200, 35, WHITE);
                     if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
@@ -663,48 +669,18 @@ void OptionMenu(){
                         MainMenuFlag = true;
                     }
                 }else{
-                    if(CurserPos == 5){
+                    if(CurserPos == 6){
                         CurserPos = ButtonNum;
                     }
                     DrawRectangle(550, 635, 200, 35, WHITE);
                 } 
-                if(((int)virtualMouse.x > 300) && ((int)virtualMouse.x < 500) && ((int)virtualMouse.y > 635) && ((int)virtualMouse.y < 670)){
-                    if(CurserPos != 4){
-                        if(SoundEffectsOn == true){
-                            PlaySound(MenuChange);
-                        }
-                        CurserPos = 4;
-                    }
-                    MenuControllerMode = false;
-                    DrawRectangle(295, 630, 210, 45, BLACK);
-                    DrawRectangle(300, 635, 200, 35, WHITE);
-                    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-                        if(SoundEffectsOn == true){
-                            PlaySound(MenuSelect);
-                        }
-                        StatsMenuFlag = true;
-                    }
-                }else if(MenuControllerMode == true && CurserPos == 4){
-                    DrawRectangle(295, 630, 210, 45, BLACK);
-                    DrawRectangle(300, 635, 200, 35, WHITE);
-                    if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                        if(SoundEffectsOn == true){
-                            PlaySound(MenuSelect);
-                        }
-                        StatsMenuFlag = true;
-                    }
-                }else{
-                    if(CurserPos == 4){
-                        CurserPos = ButtonNum;
-                    }
-                    DrawRectangle(300, 635, 200, 35, WHITE);
-                } 
+				//Music on/ off
                 if(((int)virtualMouse.x>50)&&((int)virtualMouse.x<300)&&((int)virtualMouse.y>300)&&((int)virtualMouse.y<350)){
-                    if(CurserPos != 0){
+                    if(CurserPos != 1){
                         if(SoundEffectsOn == true){
                             PlaySound(MenuChange);
                         }
-                        CurserPos = 0;
+                        CurserPos = 1;
                     }
                     if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                         if(SoundEffectsOn == true){
@@ -715,7 +691,7 @@ void OptionMenu(){
                     MenuControllerMode = false;
                     DrawRectangle(45, 295, 260, 60, BLACK);
                     DrawRectangle(50, 300, 250, 50, WHITE);
-                }else if(MenuControllerMode == true && CurserPos == 0){
+                }else if(MenuControllerMode == true && CurserPos == 1){
                     DrawRectangle(45, 295, 260, 60, BLACK);
                     DrawRectangle(50, 300, 250, 50, WHITE);
                     if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
@@ -725,7 +701,7 @@ void OptionMenu(){
                         MusicOn=!MusicOn;
                     }
                 }else{
-                    if(CurserPos == 0){
+                    if(CurserPos == 1){
                         CurserPos = ButtonNum;
                     }
                     DrawRectangle(50, 300, 250, 50, WHITE);
@@ -735,38 +711,8 @@ void OptionMenu(){
                 }else{
                     DrawText("Music: Off", 55, 300, 50, MenuTextColour);
                 }
+				//Sound effects on/ off
                 if(((int)virtualMouse.x>50)&&((int)virtualMouse.x<550)&&((int)virtualMouse.y>370)&&((int)virtualMouse.y<410)){
-                    if(CurserPos != 1){
-                        if(SoundEffectsOn == true){
-                            PlaySound(MenuChange);
-                        }
-                        CurserPos = 1;
-                    }
-                    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-                        SoundEffectsOn=!SoundEffectsOn;
-                        if(SoundEffectsOn == true){
-                            PlaySound(MenuSelect);
-                        }                
-                    }
-                    MenuControllerMode = false;
-                    DrawRectangle(45, 365, 510, 60, BLACK);
-                    DrawRectangle(50, 370, 500, 50, WHITE);
-                }else if(MenuControllerMode == true && CurserPos == 1){
-                    DrawRectangle(45, 365, 510, 60, BLACK);
-                    DrawRectangle(50, 370, 500, 50, WHITE);
-                    if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
-                        SoundEffectsOn=!SoundEffectsOn;
-                        if(SoundEffectsOn == true){
-                            PlaySound(MenuSelect);
-                        }     
-                    }
-                }else{
-                    if(CurserPos == 1){
-                        CurserPos = ButtonNum;
-                    }
-                    DrawRectangle(50, 370, 500, 50, WHITE);
-                }
-                if(((int)virtualMouse.x>50)&&((int)virtualMouse.x<550)&&((int)virtualMouse.y>440)&&((int)virtualMouse.y<490)){
                     if(CurserPos != 2){
                         if(SoundEffectsOn == true){
                             PlaySound(MenuChange);
@@ -774,8 +720,40 @@ void OptionMenu(){
                         CurserPos = 2;
                     }
                     if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                        SoundEffectsOn=!SoundEffectsOn;
+                        if(SoundEffectsOn == true){
+                            PlaySound(MenuSelect);
+                        }                
+                    }
+                    MenuControllerMode = false;
+                    DrawRectangle(45, 365, 510, 60, BLACK);
+                    DrawRectangle(50, 370, 500, 50, WHITE);
+                }else if(MenuControllerMode == true && CurserPos == 2){
+                    DrawRectangle(45, 365, 510, 60, BLACK);
+                    DrawRectangle(50, 370, 500, 50, WHITE);
+                    if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
+                        SoundEffectsOn=!SoundEffectsOn;
+                        if(SoundEffectsOn == true){
+                            PlaySound(MenuSelect);
+                        }     
+                    }
+                }else{
+                    if(CurserPos == 2){
+                        CurserPos = ButtonNum;
+                    }
+                    DrawRectangle(50, 370, 500, 50, WHITE);
+                }
+				//Tileset
+                if(((int)virtualMouse.x>50)&&((int)virtualMouse.x<550)&&((int)virtualMouse.y>440)&&((int)virtualMouse.y<490)){
+                    if(CurserPos != 3){
+                        if(SoundEffectsOn == true){
+                            PlaySound(MenuChange);
+                        }
+                        CurserPos = 3;
+                    }
+                    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                         TileSetChoice++;
-                        if(TileSetChoice > 2){
+                        if(TileSetChoice > 3){
                             TileSetChoice = 0;
                         }
                         intTextures();
@@ -786,12 +764,12 @@ void OptionMenu(){
                     MenuControllerMode = false;
                     DrawRectangle(45, 435, 510, 60, BLACK);
                     DrawRectangle(50, 440, 500, 50, WHITE);
-                }else if(MenuControllerMode == true && CurserPos == 2){
+                }else if(MenuControllerMode == true && CurserPos == 3){
                     DrawRectangle(45, 435, 510, 60, BLACK);
                     DrawRectangle(50, 440, 500, 50, WHITE);
                     if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
                         TileSetChoice++;
-                        if(TileSetChoice > 2){
+                        if(TileSetChoice > 3){
                             TileSetChoice = 0;
                         }
                         intTextures();
@@ -800,7 +778,7 @@ void OptionMenu(){
                         }     
                     }
                 }else{
-                    if(CurserPos == 2){
+                    if(CurserPos == 3){
                         CurserPos = ButtonNum;
                     }
                     DrawRectangle(50, 440, 500, 50, WHITE);
@@ -811,18 +789,21 @@ void OptionMenu(){
                     DrawText("TileSet: Gameboy", 55, 440, 50, MenuTextColour);
                 }else if(TileSetChoice == 2){
                     DrawText("TileSet: Modern", 55, 440, 50, MenuTextColour);
+                }else if(TileSetChoice == 3){
+                    DrawText("TileSet: P5", 55, 440, 50, MenuTextColour);
                 }
                 if(SoundEffectsOn == true){
                     DrawText("Sound Effects: On", 55, 370, 50, MenuTextColour);
                 }else{
                     DrawText("Sound Effects: Off", 55, 370, 50, MenuTextColour);
                 }
+				//Fullscreen
                 if(((int)virtualMouse.x>50)&&((int)virtualMouse.x<500)&&((int)virtualMouse.y>510)&&((int)virtualMouse.y<560)){
-                    if(CurserPos != 3){
+                    if(CurserPos != 4){
                         if(SoundEffectsOn == true){
                             PlaySound(MenuChange);
                         }
-                        CurserPos = 3;
+                        CurserPos = 4;
                     }
                     if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                         if(SoundEffectsOn == true){
@@ -833,7 +814,7 @@ void OptionMenu(){
                     MenuControllerMode = false;
                     DrawRectangle(45, 505, 460, 60, BLACK);
                     DrawRectangle(50, 510, 450, 50, WHITE);
-                }else if(MenuControllerMode == true && CurserPos == 3){
+                }else if(MenuControllerMode == true && CurserPos == 4){
                     DrawRectangle(45, 505, 460, 60, BLACK);
                     DrawRectangle(50, 510, 450, 50, WHITE);
                     if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)){
@@ -843,7 +824,7 @@ void OptionMenu(){
                         ToggleFullscreen();
                     }
                 }else{
-                    if(CurserPos == 3){
+                    if(CurserPos == 4){
                         CurserPos = ButtonNum;
                     }
                     DrawRectangle(50, 510, 450, 50, WHITE);
@@ -1125,7 +1106,7 @@ void MainMenu(){
     DrawText("Made by THATGUYtm", 600, 660, 15, BLACK);
     if(OptionsMenuFlag == true){
         OptionsMenuFlag = false;
-        ButtonNum = 6;
+        ButtonNum = 7;
         CurserPos = 0;
         OptionMenu();
         FadeOut();
@@ -1133,6 +1114,7 @@ void MainMenu(){
     }
     if(ModeSelectFlag == true){
         ModeSelectFlag = false;
+		ButtonNum = 3;
         ModeSelect();
         FadeOut();
         BeginGame();

@@ -4,9 +4,9 @@
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))
 #define FrameRate 60
-#define StartingLevel 33
+#define StartingLevel 1
 #define NumOfLevels 40
-#define VersionNum "0.3.2.1"
+#define VersionNum "0.3.3"
 
 Music GameMusicOne;
 Music GameMusicTwo;
