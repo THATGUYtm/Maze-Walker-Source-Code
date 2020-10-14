@@ -314,7 +314,7 @@ void StatsMenu(){
         EndDrawing();
         if(OptionsMenuFlag == true){
             OptionsMenuFlag = false;
-            ButtonNum = 6;
+            ButtonNum = 7;
             break;
         }
     }
