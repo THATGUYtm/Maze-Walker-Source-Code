@@ -5,7 +5,7 @@
 #define min(a,b) ((a)<(b)?(a):(b))
 #define FrameRate 60
 #define StartingLevel 1
-#define NumOfLevels 40
+#define NumOfLevels 45
 #define VersionNum "0.3.3"
 
 Music GameMusicOne;
