@@ -1043,7 +1043,6 @@ void SwitchLevel(){
 		case 45:
             ChangeOverLevels(LevelFourtyfive);
             KeysNeeded = 6;
-			Player[0] = 40;
 			Player[1] = 320;
             Fence[0] = 2;
             Fence[1] = 202;
@@ -1057,6 +1056,86 @@ void SwitchLevel(){
             Enimes[3] = 138;
             Enimes[4] = 221;
             Enimes[5] = 282;
+            break;
+		case 46:
+            ChangeOverLevels(LevelFourtysix);
+            KeysNeeded = 5;
+			HasEnimes = true;
+            Enimes[1] = 4;
+            Enimes[2] = 44;
+            Enimes[3] = 129;
+            Enimes[4] = 303;
+            Enimes[5] = 323;
+            break;
+		case 47:
+            ChangeOverLevels(LevelFourtyseven);
+			Player[1] = 640;
+            KeysNeeded = 4;
+			HasEnimes = true;
+			HasSpikes = true;
+            Enimes[1] = 3;
+            Enimes[2] = 36;
+            Enimes[3] = 38;
+            Enimes[4] = 151;
+            break;
+		case 48:
+            ChangeOverLevels(LevelFourtyeight);
+            KeysNeeded = 6;
+			HasEnimes = true;
+			HasSpikes = true;
+            Enimes[1] = 16;
+            Enimes[2] = 42;
+            Enimes[3] = 58;
+            Enimes[4] = 270;
+			Enimes[5] = 298;
+			Enimes[6] = 309;
+			Enimes[7] = 316;
+			Enimes[8] = 93;
+			Enimes[9] = 114;
+			Enimes[10] = 132;
+			Enimes[11] = 155;
+			Enimes[12] = 173;
+			Enimes[13] = 194;
+			Enimes[14] = 215;
+			Enimes[15] = 234;
+			Enimes[16] = 255;
+            break;
+		case 49:
+            ChangeOverLevels(LevelFourtynine);
+			Player[0] = 720;
+			Player[1] = 200;
+            KeysNeeded = 4;
+			Fence[0] = 1;
+			HasEnimes = true;
+			HasSpikes = true;
+            Enimes[1] = 24;
+            Enimes[2] = 44;
+            Enimes[3] = 46;
+            Enimes[4] = 65;
+			Enimes[5] = 67;
+			Enimes[6] = 55;
+			Enimes[7] = 144;
+			Enimes[8] = 145;
+			Enimes[9] = 146;
+			Enimes[10] = 164;
+			Enimes[11] = 165;
+			Enimes[12] = 166;
+			Enimes[13] = 184;
+			Enimes[14] = 185;
+			Enimes[15] = 186;
+			Enimes[16] = 153;
+			Enimes[17] = 154;
+			Enimes[18] = 155;
+			Enimes[19] = 173;
+			Enimes[20] = 174;
+			Enimes[21] = 175;
+			Enimes[22] = 193;
+			Enimes[23] = 194;
+			Enimes[24] = 195;
+            break;
+		case 50:
+            ChangeOverLevels(LevelFifty);
+			Fence[0] = 1;
             break;
         default:
             EndScreen();

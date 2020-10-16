@@ -4,8 +4,8 @@
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))
 #define FrameRate 60
-#define StartingLevel 1
-#define NumOfLevels 45
+#define StartingLevel 27
+#define NumOfLevels 50
 #define VersionNum "0.3.3"
 
 Music GameMusicOne;
@@ -404,7 +404,7 @@ void Game(){
         if(MusicOn == true){
             PlayInGameMusic();
         } 
-        Input();
+		Input();
         Update();
         PostionCheck();
         Draw();
@@ -802,6 +802,7 @@ void Update(){
     if(HasEnimes == true){
         Enimes[0]++;
         if(Enimes[0] >= 45 && Rock[0] != 1){
+			PostionCheck();
             if(SoundEffectsOn==true){
                 PlaySound(EnimeSoundEffect);
             }
@@ -846,6 +847,7 @@ void Update(){
                         break;
                 }
             }
+			PostionCheck();
         }
     }
     if(HasSpikes == true){
@@ -987,6 +989,7 @@ void Draw(){
         EndTextureMode();
         DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },(Rectangle){ (GetScreenWidth() - ((float)gameScreenWidth*scale))*0.5, (GetScreenHeight() - ((float)gameScreenHeight*scale))*0.5,(float)gameScreenWidth*scale, (float)gameScreenHeight*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
     EndDrawing();
+	SetWindowTitle(FormatText("%02i",Enimes[0]));
 }
 
 void ChangeOverLevels(const unsigned char Level[]){
@@ -1291,6 +1294,13 @@ void PauseMenu(){
 }
 
 void EndScreen(){
+	TotalFinnished++;
+    GameCompleted();
+    PlayMusicStream(EndingMusic);
+    if(HardMode == true){
+        HardModeBeaten = true;
+    }
+    CurrentLevel = 0;
     float fade = 1.0f;
     for(i = 0; i < 20; i++){
         if(WindowShouldClose()){
@@ -1317,13 +1327,6 @@ void EndScreen(){
         EndDrawing();
         fade -= 0.05f;
     }
-    TotalFinnished++;
-    GameCompleted();
-    PlayMusicStream(EndingMusic);
-    if(HardMode == true){
-        HardModeBeaten = true;
-    }
-    CurrentLevel = 0;
     while(!WindowShouldClose() && !IsKeyDown(KEY_ESCAPE) && !IsKeyDown(KEY_ENTER) && !IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_MIDDLE_RIGHT)){
         if(WindowShouldClose()){
             ExitGame();
