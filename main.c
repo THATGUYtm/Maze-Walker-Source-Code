@@ -4,9 +4,9 @@
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))
 #define FrameRate 60
-#define StartingLevel 27
+#define StartingLevel 1
 #define NumOfLevels 50
-#define VersionNum "0.3.3"
+#define VersionNum "0.4"
 
 Music GameMusicOne;
 Music GameMusicTwo;
@@ -408,6 +408,8 @@ void Game(){
         Update();
         PostionCheck();
         Draw();
+		if((Player[0]%40)==0){Player[0]/=40;Player[0]*=40;}
+		if((Player[1]%40)==0){Player[1]/=40;Player[1]*=40;}
     }
     ExitGame();
 }
@@ -802,7 +804,6 @@ void Update(){
     if(HasEnimes == true){
         Enimes[0]++;
         if(Enimes[0] >= 45 && Rock[0] != 1){
-			PostionCheck();
             if(SoundEffectsOn==true){
                 PlaySound(EnimeSoundEffect);
             }
