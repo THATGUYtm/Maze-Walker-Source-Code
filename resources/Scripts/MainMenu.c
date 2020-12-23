@@ -887,7 +887,7 @@ void MainMenu(){
     bool ContinueExists = false;
     if(FileExists("storage.data")){
         CurrentLevel = LoadStorageValue(0);
-        if(CurrentLevel == 0){
+        if(CurrentLevel <= 1 || TotalPlays == 0){
             ButtonNum = 3;
             ContinueExists = false;
         }else{

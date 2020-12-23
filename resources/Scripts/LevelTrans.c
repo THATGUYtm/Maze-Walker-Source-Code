@@ -1137,6 +1137,43 @@ void SwitchLevel(){
             ChangeOverLevels(LevelFifty);
 			Fence[0] = 1;
             break;
+		case 51:
+            ChangeOverLevels(LevelFiftyone);
+			HasSpikes = true;
+            break;
+		case 52:
+            ChangeOverLevels(LevelFiftytwo);
+			Player[1] = 320;
+            KeysNeeded = 4;
+			HasEnimes = true;
+            Enimes[1] = 14;
+            Enimes[2] = 323;
+            Enimes[3] = 325;
+            Enimes[4] = 327;
+			Enimes[5] = 309;
+			Enimes[6] = 331;
+			Enimes[7] = 333;
+			Enimes[8] = 315;
+			Enimes[9] = 117;
+			Enimes[10] = 218;
+			Enimes[11] = 277;
+			Enimes[12] = 317;
+			Enimes[13] = 318;
+			Enimes[14] = 337;
+			Enimes[15] = 338;
+            break;
+		case 53:
+            ChangeOverLevels(LevelFiftythree);
+            KeysNeeded = 6;
+			HasEnimes = true;
+            Enimes[1] = 6;
+            Enimes[2] = 222;
+            Enimes[3] = 188;
+            Enimes[4] = 276;
+			Enimes[5] = 117;
+			Enimes[6] = 137;
+			Enimes[7] = 138;
+			break;
 		case 90:
             ChangeOverLevels(LevelNinty);
 			Player[0] = 120;
