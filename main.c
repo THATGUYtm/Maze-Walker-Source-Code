@@ -4,9 +4,9 @@
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))
 #define FrameRate 60
-#define StartingLevel 1
-#define NumOfLevels 50
-#define VersionNum "0.5"
+#define StartingLevel 54
+#define NumOfLevels 53
+#define VersionNum "0.6"
 #define RayLibLogoToggle true
 
 Music GameMusicOne;
@@ -116,7 +116,7 @@ void RayLibLogo(){
     int logoPositionX=screenWidth/2-128,logoPositionY=screenHeight/2-128,framesCounter=0,lettersCount=0,topSideRecWidth=16,leftSideRecHeight=16,bottomSideRecWidth=16,rightSideRecHeight=16,state=0;
     float alpha = 1.0f;
     while(!WindowShouldClose()){
-        if(GetKeyPressed() > 0 || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){break;}
+        if(IsKeyPressed(KEY_ENTER) || GetKeyPressed() > 0 || IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUTTON_RIGHT_FACE_DOWN) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){break;}
         if(state == 0){
             framesCounter++;
             if(framesCounter == 120){
@@ -329,15 +329,11 @@ void GameCompleted(){
         WorstTime[2] = Timer[2];
         WorstTime[3] = Timer[3];
     }
-    if(Deaths < LeastDeathsInPlayThough && LeastDeathsInPlayThough != 0){
-        LeastDeathsInPlayThough = Deaths;
-    }else if(LeastDeathsInPlayThough == 0 && TotalFinnished > 0){
-        LeastDeathsInPlayThough = 0;
+    if(Deaths < LeastDeathsInPlayThough && TotalFinnished > 0){
+		LeastDeathsInPlayThough = Deaths;
     }
-    if(Deaths > MostDeathsInPlayThough && MostDeathsInPlayThough != 0){
+    if(Deaths > MostDeathsInPlayThough && TotalFinnished > 0){
         MostDeathsInPlayThough = Deaths;
-    }else if(MostDeathsInPlayThough == 0 && TotalFinnished > 0){
-        MostDeathsInPlayThough = 0;
     }
 }
 
